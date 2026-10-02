@@ -1,0 +1,94 @@
+@import "tailwindcss" source(none);
+@source "./index.html";
+
+@layer components {
+  .fields {
+    @apply grid gap-4;
+  }
+
+  .field {
+    @apply mt-1.5 block h-11 w-full min-w-0 rounded-xl border border-slate-300/50 bg-linear-110 from-slate-200/15
+      via-slate-800/15 to-blue-100/10 px-4 text-xs font-normal shadow-[inset_0_1px_8px_#e0eaff25,inset_0_-5px_11px_#a9bcda18]
+      outline-none transition placeholder:text-[#c0cbe0] focus:border-violet-300
+      focus:ring-2 focus:ring-violet-300/25;
+  }
+
+  label, legend {
+    @apply block text-xs font-semibold;
+  }
+
+  .card {
+    @apply mt-3 relative rounded-[23px] border border-blue-100/40 bg-linear-115 from-blue-100/20 via-[#24344d]/50
+      to-blue-200/15 px-7 py-5 shadow-[inset_1px_1px_4px_#f2f5ff65,inset_0_0_20px_#c2dbff20,0_4px_9px_#0c152040];
+  }
+
+  .section-heading {
+    @apply mb-4 flex items-center gap-5;
+  }
+
+  h2 {
+    @apply text-xl font-semibold;
+  }
+
+  .section-heading div p {
+    @apply mt-0.5 text-xs text-blue-100/90;
+  }
+
+  .caption {
+    @apply ml-auto text-[11px] text-blue-100/90;
+  }
+
+  .required {
+    @apply text-rose-400;
+  }
+
+  .help {
+    @apply mt-1.5 block text-[10px] font-normal text-slate-300;
+  }
+
+  .step {
+    @apply flex size-10 shrink-0 items-center justify-center rounded-full border text-xl font-medium
+      shadow-[inset_0_1px_7px_#e1e7ff70,0_0_15px_#9c9cff70];
+  }
+
+  .step-blue {
+    @apply border-sky-200/65 bg-[radial-gradient(circle_at_34%_19%,#d2f5ffb8,#458cba7d_28%,#233f607d_70%)];
+  }
+
+  .step-purple {
+    @apply border-violet-200/80 bg-[radial-gradient(circle_at_34%_19%,#c8c9ffab,#7360ea94_27%,#4149868c_65%)];
+  }
+
+  .gender, .skill {
+    @apply relative flex items-center rounded-[14px] border border-slate-200/50 bg-linear-125
+      from-slate-100/20 via-slate-900/25 to-blue-100/20 font-medium shadow-[inset_0_1px_5px_#ffffff45] transition
+      has-checked:border-violet-200 has-checked:from-violet-400/65
+      has-checked:via-indigo-600/60 has-checked:to-violet-400/30
+      has-checked:shadow-[inset_0_0_12px_#d0d4ff65,0_0_17px_#847aff60] px-3;
+  }
+
+  .gender {
+    @apply justify-center h-12 text-xs whitespace-nowrap;
+  }
+
+  .skill {
+    @apply h-11 gap-3 text-[11px];
+  }
+
+  input[type="radio"] {
+    @apply sr-only;
+  }
+
+  input[type="checkbox"] {
+    @apply size-4 shrink-0 accent-violet-400;
+  }
+
+  select option {
+    @apply bg-[#24334d] text-slate-100;
+  }
+
+  .button {
+    @apply flex min-h-11 items-center justify-center gap-4 rounded-2xl border px-5 text-xs transition;
+  }
+
+}

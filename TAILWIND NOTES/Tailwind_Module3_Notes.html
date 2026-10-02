@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 3 Notes — Box Model: Spacing, Sizing &amp; Arbitrary Values</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0F14; --bg-card:#141B24; --line:#232C3A;
+    --text:#E8EDF2; --text-dim:#93A1B5;
+    --sky:#38BDF8; --amber:#F59E0B; --emerald:#34D399; --rose:#FB7185;
+    --mono:'JetBrains Mono',monospace; --display:'Space Grotesk',sans-serif; --body:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--bg); color:var(--text); font-family:var(--body); line-height:1.7; }
+  ::selection{ background:var(--sky); color:#04121C; }
+  .wrap{ max-width:760px; margin:0 auto; padding:56px 32px 100px; }
+
+  header.page-head{ margin-bottom:44px; border-bottom:1px solid var(--line); padding-bottom:28px; }
+  .eyebrow{ font-family:var(--mono); font-size:.72rem; color:var(--sky); letter-spacing:.08em; text-transform:uppercase; margin-bottom:10px; }
+  h1{ font-family:var(--display); font-size:1.9rem; font-weight:700; letter-spacing:-.01em; margin-bottom:8px; }
+  .subhead{ color:var(--text-dim); font-size:.92rem; }
+
+  nav.toc{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:18px 20px; margin-bottom:50px; }
+  nav.toc .toc-label{ font-family:var(--mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--text-dim); margin-bottom:10px; }
+  nav.toc ol{ list-style:none; counter-reset:toc; display:grid; gap:5px; }
+  nav.toc li{ counter-increment:toc; font-size:.87rem; }
+  nav.toc li::before{ content:counter(toc) "."; color:var(--sky); font-family:var(--mono); margin-right:8px; width:16px; display:inline-block; }
+  nav.toc a{ color:var(--text); text-decoration:none; }
+  nav.toc a:hover{ color:var(--sky); }
+
+  section{ margin-bottom:56px; scroll-margin-top:20px; }
+
+  h2{ font-family:var(--display); font-size:1.4rem; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:10px; }
+  h2 .no{ font-family:var(--mono); font-size:.78rem; color:var(--bg); background:var(--sky); width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .section-line{ height:1px; background:var(--line); margin:12px 0 20px; }
+
+  h3{ font-family:var(--body); font-size:1rem; font-weight:600; margin:22px 0 8px; color:var(--text); }
+
+  p{ font-size:.94rem; color:var(--text-dim); margin-bottom:12px; }
+  p strong{ color:var(--text); font-weight:600; }
+
+  code{ font-family:var(--mono); background:var(--bg-card); border:1px solid var(--line); color:var(--sky); padding:1px 6px; border-radius:5px; font-size:.85em; }
+
+  ul.notes-list, ol.notes-list{ margin:10px 0 16px 0; padding-left:0; list-style:none; }
+  ul.notes-list li, ol.notes-list li{ font-size:.93rem; color:var(--text-dim); padding-left:20px; position:relative; margin-bottom:8px; }
+  ul.notes-list li::before{ content:'–'; position:absolute; left:0; color:var(--sky); }
+  ol.notes-list{ counter-reset:step; }
+  ol.notes-list li{ counter-increment:step; }
+  ol.notes-list li::before{ content:counter(step) '.'; position:absolute; left:0; color:var(--sky); font-family:var(--mono); font-size:.85em; }
+  li strong{ color:var(--text); }
+
+  table{ width:100%; border-collapse:collapse; margin:16px 0 8px; font-size:.87rem; }
+  th{ text-align:left; font-family:var(--mono); font-weight:500; font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; color:var(--text-dim); padding:9px 12px; border-bottom:1px solid var(--line); }
+  td{ padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--text-dim); }
+  tr:last-child td{ border-bottom:none; }
+  td code{ color:var(--sky); }
+  td strong{ color:var(--text); }
+
+  pre.code-block{
+    font-family:var(--mono); font-size:.83rem; color:var(--emerald);
+    background:var(--bg-card); border:1px solid var(--line); border-radius:10px;
+    padding:16px 18px; overflow-x:auto; margin:14px 0 18px;
+  }
+
+  .note{
+    border-left:3px solid var(--sky); background:rgba(56,189,248,.06);
+    padding:12px 16px; border-radius:0 8px 8px 0; margin:16px 0; font-size:.88rem; color:var(--text-dim);
+  }
+  .note strong{ color:var(--sky); }
+
+  .warn{
+    border-left:3px solid var(--amber); background:rgba(245,158,11,.06);
+    padding:12px 16px; border-radius:0 8px 8px 0; margin:16px 0; font-size:.88rem; color:var(--text-dim);
+  }
+  .warn strong{ color:var(--amber); }
+
+  .qa-block{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin-bottom:12px; }
+  .qa-q{ font-size:.9rem; font-weight:600; color:var(--text); margin-bottom:6px; }
+  .qa-q .tag{ font-family:var(--mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.05em; padding:2px 7px; border-radius:5px; margin-right:8px; background:rgba(56,189,248,.15); color:var(--sky); }
+  .qa-q .tag.myth{ background:rgba(251,113,133,.15); color:var(--rose); }
+  .qa-a{ font-size:.87rem; color:var(--text-dim); }
+
+  .scale-table td.val{ font-family:var(--mono); color:var(--emerald); }
+
+  .summary-box{
+    background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:20px 22px; margin-top:10px;
+  }
+  .summary-box ul.notes-list li::before{ content:'✓'; color:var(--emerald); }
+
+  footer.end{ text-align:center; padding:36px 20px; color:var(--text-dim); font-size:.82rem; border-top:1px solid var(--line); margin-top:40px; }
+
+  ::-webkit-scrollbar{ width:9px; height:9px; }
+  ::-webkit-scrollbar-track{ background:var(--bg); }
+  ::-webkit-scrollbar-thumb{ background:var(--line); border-radius:6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page-head">
+    <div class="eyebrow">Module 3 — Notes</div>
+    <h1>Box Model: Spacing, Sizing &amp; Arbitrary Values</h1>
+    <p class="subhead">Tailwind CSS · Nexcore Institute of Technology · Beginner Track</p>
+  </header>
+
+  <nav class="toc">
+    <div class="toc-label">Contents</div>
+    <ol>
+      <li><a href="#padding">Padding</a></li>
+      <li><a href="#margin">Margin</a></li>
+      <li><a href="#spacing-scale">The Spacing Scale</a></li>
+      <li><a href="#width-height">Width &amp; Height</a></li>
+      <li><a href="#borders">Borders &amp; Radius</a></li>
+      <li><a href="#arbitrary">Arbitrary Values</a></li>
+      <li><a href="#qa">Common Questions &amp; Misconceptions</a></li>
+      <li><a href="#summary">Summary</a></li>
+    </ol>
+  </nav>
+
+  <section id="padding">
+    <h2><span class="no">1</span>Padding</h2>
+    <div class="section-line"></div>
+    <p>Padding is the space <strong>inside</strong> an element, between its border and its content. Tailwind controls it with the <code>p-</code> prefix and its directional variants.</p>
+
+    <table>
+      <tr><th>Class</th><th>Effect</th></tr>
+      <tr><td><code>p-4</code></td><td>Padding on all four sides</td></tr>
+      <tr><td><code>px-4</code></td><td>Padding left + right only</td></tr>
+      <tr><td><code>py-4</code></td><td>Padding top + bottom only</td></tr>
+      <tr><td><code>pt-4</code> / <code>pr-4</code> / <code>pb-4</code> / <code>pl-4</code></td><td>Padding on a single side (top/right/bottom/left)</td></tr>
+    </table>
+
+    <pre class="code-block">&lt;div class="p-6 bg-slate-800"&gt;
+  Content with padding on all sides
+&lt;/div&gt;
+
+&lt;div class="px-8 py-3 bg-slate-800"&gt;
+  Wider horizontal padding, shorter vertical padding
+&lt;/div&gt;</pre>
+
+    <p>The number after the prefix is not a pixel value. It refers to a step on Tailwind's spacing scale, covered in Section 3.</p>
+  </section>
+
+  <section id="margin">
+    <h2><span class="no">2</span>Margin</h2>
+    <div class="section-line"></div>
+    <p>Margin is the space <strong>outside</strong> an element, between its border and neighboring elements. It follows the exact same naming pattern as padding, using <code>m-</code> instead of <code>p-</code>.</p>
+
+    <table>
+      <tr><th>Class</th><th>Effect</th></tr>
+      <tr><td><code>m-4</code></td><td>Margin on all four sides</td></tr>
+      <tr><td><code>mx-4</code></td><td>Margin left + right only</td></tr>
+      <tr><td><code>my-4</code></td><td>Margin top + bottom only</td></tr>
+      <tr><td><code>mt-4</code> / <code>mr-4</code> / <code>mb-4</code> / <code>ml-4</code></td><td>Margin on a single side</td></tr>
+      <tr><td><code>mx-auto</code></td><td>Automatically centers a block element horizontally (requires a set width)</td></tr>
+    </table>
+
+    <h3>Negative margins</h3>
+    <p>Prefix the class with a dash to pull an element in the opposite direction of normal margin.</p>
+    <pre class="code-block">&lt;div class="-mt-4"&gt;
+  Pulled 4 spacing-units upward, overlapping the element above it
+&lt;/div&gt;</pre>
+
+    <div class="warn"><strong>Note:</strong> <code>mx-auto</code> only centers an element if it already has a fixed or max width. Without a width, there is nothing for "auto" to center within, and the class has no visible effect.</div>
+  </section>
+
+  <section id="spacing-scale">
+    <h2><span class="no">3</span>The Spacing Scale</h2>
+    <div class="section-line"></div>
+    <p>Tailwind's spacing scale is used by padding, margin, width, height, and gap. The number in a class is a step on this scale, not a literal pixel count. Each step equals <code>0.25rem</code> (4px at the default browser font size).</p>
+
+    <table class="scale-table">
+      <tr><th>Step</th><th>rem</th><th>px</th></tr>
+      <tr><td><code>1</code></td><td class="val">0.25rem</td><td class="val">4px</td></tr>
+      <tr><td><code>2</code></td><td class="val">0.5rem</td><td class="val">8px</td></tr>
+      <tr><td><code>4</code></td><td class="val">1rem</td><td class="val">16px</td></tr>
+      <tr><td><code>6</code></td><td class="val">1.5rem</td><td class="val">24px</td></tr>
+      <tr><td><code>8</code></td><td class="val">2rem</td><td class="val">32px</td></tr>
+      <tr><td><code>12</code></td><td class="val">3rem</td><td class="val">48px</td></tr>
+      <tr><td><code>16</code></td><td class="val">4rem</td><td class="val">64px</td></tr>
+    </table>
+
+    <p>Formula: <code>step &times; 4px = pixel value</code> (at default settings). Step 4 is 16px, step 8 is 32px, and so on.</p>
+
+    <div class="note"><strong>Key point:</strong> This is a fixed, shared scale across the entire framework. Learning it once for padding means it already applies to margin, width, height, and gap without relearning anything.</div>
+  </section>
+
+  <section id="width-height">
+    <h2><span class="no">4</span>Width &amp; Height</h2>
+    <div class="section-line"></div>
+    <p>Width and height also use the same numeric spacing scale, plus a set of keyword values for common cases.</p>
+
+    <table>
+      <tr><th>Class</th><th>Effect</th></tr>
+      <tr><td><code>w-4</code> / <code>h-4</code></td><td>Width/height using the spacing scale (16px)</td></tr>
+      <tr><td><code>w-64</code> / <code>h-64</code></td><td>16rem (256px)</td></tr>
+      <tr><td><code>w-full</code></td><td>100% of the parent element's width</td></tr>
+      <tr><td><code>w-screen</code></td><td>100% of the viewport width (ignores parent size)</td></tr>
+      <tr><td><code>min-w-0</code> / <code>max-w-md</code></td><td>Minimum/maximum width constraints</td></tr>
+    </table>
+
+    <h3>w-full vs w-screen</h3>
+    <ul class="notes-list">
+      <li><code>w-full</code> fills the width of whatever contains it. If the parent is 400px wide, the element becomes 400px wide.</li>
+      <li><code>w-screen</code> always fills the entire browser viewport width, regardless of the parent's size. This can cause horizontal overflow if the element sits inside a padded or centered container.</li>
+    </ul>
+
+    <div class="warn"><strong>Common error:</strong> using <code>w-screen</code> inside a page that already has side padding. This makes the element wider than its container and creates an unwanted horizontal scrollbar.</div>
+  </section>
+
+  <section id="borders">
+    <h2><span class="no">5</span>Borders &amp; Radius</h2>
+    <div class="section-line"></div>
+
+    <h3>Border width and color</h3>
+    <table>
+      <tr><th>Class</th><th>Effect</th></tr>
+      <tr><td><code>border</code></td><td>1px border, all sides, default color</td></tr>
+      <tr><td><code>border-2</code> / <code>border-4</code></td><td>Thicker border widths</td></tr>
+      <tr><td><code>border-{color}-{shade}</code></td><td>Sets border color, e.g. <code>border-sky-500</code></td></tr>
+      <tr><td><code>border-t</code> / <code>border-b</code></td><td>Border on a single side only</td></tr>
+    </table>
+
+    <div class="warn"><strong>Order matters for visibility:</strong> a border class alone (<code>border</code>) does not show a border width unless paired with a border style. By default it renders as a solid 1px line, but if <code>border-{color}</code> is added without the base <code>border</code> class, no border appears at all, since there is no width set yet.</div>
+
+    <h3>Border radius</h3>
+    <table>
+      <tr><th>Class</th><th>Effect</th></tr>
+      <tr><td><code>rounded</code></td><td>Small default radius on all corners</td></tr>
+      <tr><td><code>rounded-lg</code> / <code>rounded-xl</code></td><td>Larger radius steps</td></tr>
+      <tr><td><code>rounded-full</code></td><td>Fully circular/pill shape (50% radius)</td></tr>
+      <tr><td><code>rounded-t-lg</code></td><td>Radius applied to top corners only</td></tr>
+    </table>
+  </section>
+
+  <section id="arbitrary">
+    <h2><span class="no">6</span>Arbitrary Values</h2>
+    <div class="section-line"></div>
+    <p>The spacing scale does not cover every possible number. Arbitrary value syntax allows any exact CSS value using square brackets.</p>
+
+    <pre class="code-block">&lt;div class="w-[350px] h-[220px]"&gt;
+  Exact pixel dimensions not on the default scale
+&lt;/div&gt;
+
+&lt;div class="top-[13px] text-[15px]"&gt;
+  Works for most properties, not only spacing
+&lt;/div&gt;</pre>
+
+    <ol class="notes-list">
+      <li>The value inside the brackets is written exactly as it would be in plain CSS: <code>px</code>, <code>rem</code>, <code>%</code>, <code>vh</code>, etc.</li>
+      <li>No spaces are allowed inside the brackets. Use an underscore if a value requires a space, such as in some CSS functions.</li>
+      <li>Arbitrary values work across most utilities, including colors: <code>bg-[#1e3a8a]</code> is valid.</li>
+    </ol>
+
+    <div class="note"><strong>When to use this:</strong> arbitrary values are meant for exceptions, matching a specific design spec, or a one-off measurement. Relying on them for most of a layout usually signals that the project should extend the theme in <code>tailwind.config.js</code> instead (covered in Module 9).</div>
+  </section>
+
+  <section id="qa">
+    <h2><span class="no">?</span>Common Questions &amp; Misconceptions</h2>
+    <div class="section-line"></div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>The number in p-4 means 4 pixels.</div>
+      <div class="qa-a">Incorrect. It is step 4 on the spacing scale, which equals 1rem (16px) by default. The class name and the pixel value are not the same number.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>Why does mx-auto sometimes do nothing?</div>
+      <div class="qa-a">It requires the element to already have a defined width (a fixed value or a max-width class). Without a width, there is no extra space on either side to distribute, so centering has nothing to act on.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>w-screen and w-full behave the same way.</div>
+      <div class="qa-a">They do not. w-full is relative to the parent container. w-screen is relative to the entire browser viewport and ignores the parent, which can cause layout overflow inside padded containers.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>Why doesn't border-red-500 show a border on its own?</div>
+      <div class="qa-a">A color class only sets the color of a border, not its width. Without the base border class (or a width variant like border-2), the border width remains zero, so no border is visible regardless of color.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>Are arbitrary values considered bad practice?</div>
+      <div class="qa-a">Not inherently. They are appropriate for one-off, exact requirements. They become a problem only when overused as a substitute for learning or extending the standard scale, since that reduces consistency across a project.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>Every utility property has its own separate numbering scale.</div>
+      <div class="qa-a">Padding, margin, width, height, and gap all share the same spacing scale. Learning the scale once applies to all of them.</div>
+    </div>
+  </section>
+
+  <section id="summary">
+    <h2><span class="no">✓</span>Summary</h2>
+    <div class="section-line"></div>
+    <div class="summary-box">
+      <ul class="notes-list">
+        <li>Padding (<code>p-</code>) is space inside an element; margin (<code>m-</code>) is space outside it.</li>
+        <li>Both use directional variants: <code>x</code> for left/right, <code>y</code> for top/bottom, or a single side letter.</li>
+        <li>The spacing scale is shared across padding, margin, width, height, and gap. One step equals 0.25rem (4px).</li>
+        <li><code>w-full</code> is relative to the parent; <code>w-screen</code> is relative to the full viewport.</li>
+        <li>A border needs a base <code>border</code> or width class before a color class has any visible effect.</li>
+        <li>Arbitrary values (<code>w-[350px]</code>) cover exact, one-off measurements outside the standard scale.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="end">
+    Module 3 Notes · Tailwind CSS Track · Nexcore Institute of Technology<br>
+    Next: Module 4 — Display &amp; Flexbox
+  </footer>
+
+</div>
+</body>
+</html>

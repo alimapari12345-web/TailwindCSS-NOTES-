@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 1 &amp; 2 Notes — Foundations, Typography &amp; Color</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0F14; --bg-card:#141B24; --line:#232C3A;
+    --text:#E8EDF2; --text-dim:#93A1B5;
+    --sky:#38BDF8; --amber:#F59E0B; --emerald:#34D399; --rose:#FB7185;
+    --mono:'JetBrains Mono',monospace; --display:'Space Grotesk',sans-serif; --body:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--bg); color:var(--text); font-family:var(--body); line-height:1.7; }
+  ::selection{ background:var(--sky); color:#04121C; }
+  .wrap{ max-width:760px; margin:0 auto; padding:56px 32px 100px; }
+
+  header.page-head{ margin-bottom:44px; border-bottom:1px solid var(--line); padding-bottom:28px; }
+  .eyebrow{ font-family:var(--mono); font-size:.72rem; color:var(--sky); letter-spacing:.08em; text-transform:uppercase; margin-bottom:10px; }
+  h1{ font-family:var(--display); font-size:1.9rem; font-weight:700; letter-spacing:-.01em; margin-bottom:8px; }
+  .subhead{ color:var(--text-dim); font-size:.92rem; }
+
+  nav.toc{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:18px 20px; margin-bottom:50px; }
+  nav.toc .toc-label{ font-family:var(--mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--text-dim); margin-bottom:10px; }
+  nav.toc ol{ list-style:none; counter-reset:toc; display:grid; grid-template-columns:1fr 1fr; gap:5px 18px; }
+  nav.toc li{ counter-increment:toc; font-size:.87rem; }
+  nav.toc li::before{ content:counter(toc) "."; color:var(--sky); font-family:var(--mono); margin-right:8px; }
+  nav.toc a{ color:var(--text); text-decoration:none; }
+  nav.toc a:hover{ color:var(--sky); }
+
+  .module-divider{
+    font-family:var(--mono); font-size:.75rem; color:var(--sky); text-transform:uppercase;
+    letter-spacing:.08em; margin:64px 0 30px; display:flex; align-items:center; gap:14px;
+  }
+  .module-divider::after{ content:''; flex:1; height:1px; background:var(--line); }
+  .module-divider:first-of-type{ margin-top:0; }
+
+  section{ margin-bottom:56px; scroll-margin-top:20px; }
+
+  h2{ font-family:var(--display); font-size:1.4rem; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:10px; }
+  h2 .no{ font-family:var(--mono); font-size:.78rem; color:var(--bg); background:var(--sky); width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .section-line{ height:1px; background:var(--line); margin:12px 0 20px; }
+
+  h3{ font-family:var(--body); font-size:1rem; font-weight:600; margin:22px 0 8px; color:var(--text); }
+
+  p{ font-size:.94rem; color:var(--text-dim); margin-bottom:12px; }
+  p strong{ color:var(--text); font-weight:600; }
+
+  code{ font-family:var(--mono); background:var(--bg-card); border:1px solid var(--line); color:var(--sky); padding:1px 6px; border-radius:5px; font-size:.85em; }
+
+  ul.notes-list, ol.notes-list{ margin:10px 0 16px 0; padding-left:0; list-style:none; }
+  ul.notes-list li, ol.notes-list li{ font-size:.93rem; color:var(--text-dim); padding-left:20px; position:relative; margin-bottom:8px; }
+  ul.notes-list li::before{ content:'–'; position:absolute; left:0; color:var(--sky); }
+  ol.notes-list{ counter-reset:step; }
+  ol.notes-list li{ counter-increment:step; }
+  ol.notes-list li::before{ content:counter(step) '.'; position:absolute; left:0; color:var(--sky); font-family:var(--mono); font-size:.85em; }
+  li strong{ color:var(--text); }
+
+  table{ width:100%; border-collapse:collapse; margin:16px 0 8px; font-size:.87rem; }
+  th{ text-align:left; font-family:var(--mono); font-weight:500; font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; color:var(--text-dim); padding:9px 12px; border-bottom:1px solid var(--line); }
+  td{ padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--text-dim); }
+  tr:last-child td{ border-bottom:none; }
+  td code{ color:var(--sky); }
+  td strong{ color:var(--text); }
+
+  pre.code-block{
+    font-family:var(--mono); font-size:.83rem; color:var(--emerald);
+    background:var(--bg-card); border:1px solid var(--line); border-radius:10px;
+    padding:16px 18px; overflow-x:auto; margin:14px 0 18px;
+  }
+
+  .note{ border-left:3px solid var(--sky); background:rgba(56,189,248,.06); padding:12px 16px; border-radius:0 8px 8px 0; margin:16px 0; font-size:.88rem; color:var(--text-dim); }
+  .note strong{ color:var(--sky); }
+  .warn{ border-left:3px solid var(--amber); background:rgba(245,158,11,.06); padding:12px 16px; border-radius:0 8px 8px 0; margin:16px 0; font-size:.88rem; color:var(--text-dim); }
+  .warn strong{ color:var(--amber); }
+
+  .qa-block{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin-bottom:12px; }
+  .qa-q{ font-size:.9rem; font-weight:600; color:var(--text); margin-bottom:6px; }
+  .qa-q .tag{ font-family:var(--mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.05em; padding:2px 7px; border-radius:5px; margin-right:8px; background:rgba(56,189,248,.15); color:var(--sky); }
+  .qa-q .tag.myth{ background:rgba(251,113,133,.15); color:var(--rose); }
+  .qa-a{ font-size:.87rem; color:var(--text-dim); }
+
+  .scale-strip{ display:flex; border-radius:8px; overflow:hidden; margin:16px 0; border:1px solid var(--line); }
+  .scale-swatch{ flex:1; height:46px; display:flex; align-items:flex-end; justify-content:center; padding-bottom:4px; }
+  .scale-swatch span{ font-family:var(--mono); font-size:.6rem; opacity:.9; }
+
+  .summary-box{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:20px 22px; margin-top:10px; }
+  .summary-box ul.notes-list li::before{ content:'✓'; color:var(--emerald); }
+
+  footer.end{ text-align:center; padding:36px 20px; color:var(--text-dim); font-size:.82rem; border-top:1px solid var(--line); margin-top:40px; }
+
+  ::-webkit-scrollbar{ width:9px; height:9px; }
+  ::-webkit-scrollbar-track{ background:var(--bg); }
+  ::-webkit-scrollbar-thumb{ background:var(--line); border-radius:6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page-head">
+    <div class="eyebrow">Module 1 &amp; 2 — Notes</div>
+    <h1>Foundations, Typography &amp; Color</h1>
+    <p class="subhead">Tailwind CSS · Nexcore Institute of Technology · Beginner Track</p>
+  </header>
+
+  <nav class="toc">
+    <div class="toc-label">Contents</div>
+    <ol>
+      <li><a href="#what-is">What Is Tailwind</a></li>
+      <li><a href="#cdn">CDN Setup</a></li>
+      <li><a href="#syntax">Reading the Syntax</a></li>
+      <li><a href="#qa1">Module 1 Q&amp;A</a></li>
+      <li><a href="#text">Text Utilities</a></li>
+      <li><a href="#leading">Leading &amp; Tracking</a></li>
+      <li><a href="#color">Color System</a></li>
+      <li><a href="#scale">The 50-950 Scale</a></li>
+      <li><a href="#qa2">Module 2 Q&amp;A</a></li>
+      <li><a href="#summary">Summary</a></li>
+    </ol>
+  </nav>
+
+  <div class="module-divider">Module 1 — Foundations &amp; Quick Setup</div>
+
+  <section id="what-is">
+    <h2><span class="no">1</span>What Is Tailwind CSS</h2>
+    <div class="section-line"></div>
+    <p>Tailwind is a utility-first CSS framework. Instead of writing custom CSS rules in a separate file, elements are styled directly in HTML using small, single-purpose classes.</p>
+
+    <table>
+      <tr><th>Traditional CSS</th><th>Tailwind</th></tr>
+      <tr><td>Invent a class name (<code>.btn-primary</code>), then define its styles separately</td><td>Apply existing utility classes directly: <code>bg-blue-600 text-white px-5 py-3 rounded-lg</code></td></tr>
+      <tr><td>Switch between HTML and CSS files to understand styling</td><td>Styling is visible directly in the HTML markup</td></tr>
+    </table>
+
+    <h3>Tailwind vs Bootstrap</h3>
+    <p>Bootstrap ships pre-built components (<code>.btn</code>, <code>.card</code>, <code>.navbar</code>) that already have a fixed look. Tailwind provides raw utility classes with no built-in look, the design comes entirely from how classes are combined.</p>
+
+    <ul class="notes-list">
+      <li>Every utility class controls exactly one CSS property.</li>
+      <li><code>bg-blue-600</code> only sets background color.</li>
+      <li><code>px-5</code> only sets horizontal padding.</li>
+      <li>A finished design is built by combining many small classes rather than writing one custom rule.</li>
+    </ul>
+  </section>
+
+  <section id="cdn">
+    <h2><span class="no">2</span>CDN Setup</h2>
+    <div class="section-line"></div>
+    <p>For this course, no Node.js, npm, or build step is required. A single script tag in the page head is enough to enable Tailwind.</p>
+
+    <pre class="code-block">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1 class="text-3xl font-bold text-blue-600"&gt;
+    It works
+  &lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+    <div class="warn"><strong>CDN is for learning, not for shipping:</strong> the CDN version compiles Tailwind in the browser on every page load. This is appropriate for practice and prototypes. Production projects use the installed version with a build step, covered in Module 9.</div>
+
+    <p>Classes are written inside the normal <code>class="..."</code> attribute, the same attribute already used in plain HTML, just with more values inside it.</p>
+  </section>
+
+  <section id="syntax">
+    <h2><span class="no">3</span>Reading the Syntax</h2>
+    <div class="section-line"></div>
+    <p>Most Tailwind classes follow the pattern <code>property-value</code>. Recognizing this pattern makes it possible to guess a class before checking documentation.</p>
+
+    <table>
+      <tr><th>Prefix</th><th>Property it controls</th><th>Example</th></tr>
+      <tr><td><code>bg-</code></td><td>Background color</td><td><code>bg-red-500</code></td></tr>
+      <tr><td><code>text-</code></td><td>Text color or font size (context-dependent)</td><td><code>text-white</code> / <code>text-xl</code></td></tr>
+      <tr><td><code>p-</code></td><td>Padding, all sides</td><td><code>p-4</code></td></tr>
+      <tr><td><code>m-</code></td><td>Margin, all sides</td><td><code>m-2</code></td></tr>
+      <tr><td><code>rounded-</code></td><td>Border radius</td><td><code>rounded-lg</code></td></tr>
+      <tr><td><code>font-</code></td><td>Font weight or family</td><td><code>font-bold</code></td></tr>
+      <tr><td><code>w-</code> / <code>h-</code></td><td>Width / height</td><td><code>w-64</code></td></tr>
+    </table>
+
+    <div class="note"><strong>Guessing approach:</strong> identify the CSS property being targeted, then shorten it. Font size needs <code>text-</code> plus a size word. Background color needs <code>bg-</code> plus a color. The Tailwind documentation search bar accepts CSS property names directly and returns the matching class.</div>
+  </section>
+
+  <section id="qa1">
+    <h2><span class="no">?</span>Module 1 — Common Questions &amp; Misconceptions</h2>
+    <div class="section-line"></div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>Tailwind is just inline styles with extra steps.</div>
+      <div class="qa-a">Inline styles cannot respond to hover, focus, dark mode, or screen size. Tailwind classes can, through variants like <code>hover:bg-blue-700</code>, <code>md:text-xl</code>, and <code>dark:bg-slate-900</code>. Tailwind also enforces shared design tokens (spacing, colors) across a project, which raw inline styles do not.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>Hundreds of classes must be memorized before starting.</div>
+      <div class="qa-a">Only the property-value pattern and a handful of prefixes need to be learned upfront. Most other classes are guessable from the pattern, and the rest are one documentation search away.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>Is Node.js or npm required to follow this course?</div>
+      <div class="qa-a">No. The CDN script tag provides full Tailwind functionality in the browser with no installation. The installed build version is introduced later, in Module 9.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>What happens if a class is misspelled, such as bg-blu-600?</div>
+      <div class="qa-a">Nothing breaks. Tailwind does not recognize the class, so no style is applied for that property, and no error message appears with the CDN version. Careful spelling matters more than it would with a compiler that reports errors.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>Utility classes make HTML unreadable.</div>
+      <div class="qa-a">This looks unfamiliar at first, but long class lists are commonly considered easier to scan than switching between an HTML file and a separate CSS file to trace what styles an element. Familiarity with reading class lists develops quickly with regular use.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>Can custom CSS still be written alongside Tailwind?</div>
+      <div class="qa-a">Yes. Tailwind does not replace CSS, it is built on top of it. A style block or external stylesheet can still be used for anything Tailwind does not cover.</div>
+    </div>
+  </section>
+
+  <div class="module-divider">Module 2 — Typography &amp; Color</div>
+
+  <section id="text">
+    <h2><span class="no">1</span>Text Utilities</h2>
+    <div class="section-line"></div>
+    <p>Font size uses named steps rather than pixel values. Weight and alignment use their own separate prefixes.</p>
+
+    <table>
+      <tr><th>Category</th><th>Classes</th></tr>
+      <tr><td>Size scale</td><td><code>text-xs</code> through <code>text-9xl</code>. <code>text-base</code> is the default (16px). <code>text-xl</code> is 20px. <code>text-4xl</code> is 36px.</td></tr>
+      <tr><td>Weight</td><td><code>font-thin</code> (100), <code>font-normal</code> (400), <code>font-semibold</code> (600), <code>font-bold</code> (700), <code>font-black</code> (900)</td></tr>
+      <tr><td>Alignment</td><td><code>text-left</code>, <code>text-center</code>, <code>text-right</code>, <code>text-justify</code></td></tr>
+      <tr><td>Other</td><td><code>italic</code>, <code>underline</code>, <code>uppercase</code></td></tr>
+    </table>
+  </section>
+
+  <section id="leading">
+    <h2><span class="no">2</span>Leading &amp; Tracking</h2>
+    <div class="section-line"></div>
+    <p><code>leading-*</code> controls line height, the space between lines of wrapped text. <code>tracking-*</code> controls letter spacing, the space between individual characters. These control different axes and are not interchangeable.</p>
+
+    <table>
+      <tr><th>Class</th><th>Effect</th></tr>
+      <tr><td><code>leading-none</code></td><td>Tightest line height</td></tr>
+      <tr><td><code>leading-normal</code></td><td>Default line height</td></tr>
+      <tr><td><code>leading-loose</code></td><td>Widest line height</td></tr>
+      <tr><td><code>tracking-tighter</code></td><td>Letters pulled closer together</td></tr>
+      <tr><td><code>tracking-wide</code> / <code>tracking-widest</code></td><td>Letters spaced further apart</td></tr>
+    </table>
+
+    <div class="warn"><strong>Common trap:</strong> leading only becomes visible once text wraps onto multiple lines. Applying it to a single short word produces no visible change, this is expected behavior, not a bug.</div>
+  </section>
+
+  <section id="color">
+    <h2><span class="no">3</span>The Color System</h2>
+    <div class="section-line"></div>
+    <p>Every color utility follows the pattern <code>property-color-shade</code>. The property decides what is being colored, and the color plus shade decide which color.</p>
+
+    <table>
+      <tr><th>Property prefix</th><th>What it colors</th></tr>
+      <tr><td><code>bg-</code></td><td>Background color</td></tr>
+      <tr><td><code>text-</code></td><td>Text color</td></tr>
+      <tr><td><code>border-</code></td><td>Border color</td></tr>
+      <tr><td><code>ring-</code></td><td>Focus ring / outline glow (covered in Module 6)</td></tr>
+      <tr><td><code>placeholder-</code></td><td>Form input placeholder text</td></tr>
+    </table>
+
+    <pre class="code-block">&lt;div class="bg-violet-500 text-white border-4 border-violet-800 p-6 rounded-xl"&gt;
+  Styled box
+&lt;/div&gt;</pre>
+  </section>
+
+  <section id="scale">
+    <h2><span class="no">4</span>The 50-950 Shade Scale</h2>
+    <div class="section-line"></div>
+    <p>Every color in Tailwind comes in 11 shades, numbered 50 (lightest) to 950 (darkest). 500 is roughly the "true" version of that color.</p>
+
+    <div class="scale-strip">
+      <div class="scale-swatch" style="background:#F0FDF4;"><span style="color:#166534;">50</span></div>
+      <div class="scale-swatch" style="background:#DCFCE7;"><span style="color:#166534;">100</span></div>
+      <div class="scale-swatch" style="background:#BBF7D0;"><span style="color:#166534;">200</span></div>
+      <div class="scale-swatch" style="background:#86EFAC;"><span style="color:#14532D;">300</span></div>
+      <div class="scale-swatch" style="background:#4ADE80;"><span style="color:#14532D;">400</span></div>
+      <div class="scale-swatch" style="background:#22C55E;"><span style="color:#F0FDF4;">500</span></div>
+      <div class="scale-swatch" style="background:#16A34A;"><span style="color:#F0FDF4;">600</span></div>
+      <div class="scale-swatch" style="background:#15803D;"><span style="color:#F0FDF4;">700</span></div>
+      <div class="scale-swatch" style="background:#166534;"><span style="color:#F0FDF4;">800</span></div>
+      <div class="scale-swatch" style="background:#14532D;"><span style="color:#F0FDF4;">900</span></div>
+      <div class="scale-swatch" style="background:#052E16;"><span style="color:#F0FDF4;">950</span></div>
+    </div>
+    <p>This is the <code>green</code> palette. Every other color name (<code>blue</code>, <code>rose</code>, <code>slate</code>, <code>amber</code>) follows the same 11-step structure.</p>
+
+    <div class="note"><strong>Rule of thumb:</strong> shades 50-300 work as backgrounds and subtle fills. 400-600 are the main usable colors for buttons and links. 700-950 work as dark text or dark-mode backgrounds. Starting at 500 and adjusting up or down is a reasonable default approach.</div>
+  </section>
+
+  <section id="qa2">
+    <h2><span class="no">?</span>Module 2 — Common Questions &amp; Misconceptions</h2>
+    <div class="section-line"></div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>text-lg always means the same pixel size across every project.</div>
+      <div class="qa-a">It means the same size relative to Tailwind's default scale (18px for text-lg out of the box), but a project's <code>tailwind.config.js</code> can redefine the scale. For this course's default setup, the standard sizes apply consistently.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>500 is always the exact middle brightness of a color.</div>
+      <div class="qa-a">This holds for most palettes, but a few colors, such as yellow, appear visually brighter at 400 than at 500 due to how the human eye perceives that hue. Checking a shade visually is more reliable than assuming the number guarantees a specific brightness.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>Why does text-white disappear when the background changes from bg-sky-500 to bg-sky-100?</div>
+      <div class="qa-a">This is expected. Light backgrounds (50-300 range) need dark text for readable contrast, while darker backgrounds (500 and above) generally need light text. This is also a real accessibility consideration in production work.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>What does the /50 in a class like text-red-500/50 mean?</div>
+      <div class="qa-a">The slash sets opacity, in this case 50 percent. This is separate from the shade number before it. A slash followed by a number after a color class indicates opacity, not an additional shade step.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>Leading and tracking are two names for the same thing.</div>
+      <div class="qa-a">They control different axes. Leading is vertical space between lines. Tracking is horizontal space between letters. Confusing the two is a frequent early error, if lines feel cramped, leading is the relevant property, not tracking.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>Can font size and color classes be combined freely?</div>
+      <div class="qa-a">Yes, they control independent CSS properties, so classes like <code>text-4xl text-blue-600 font-bold</code> combine without conflict. Conflicts only occur when two classes try to set the same property, such as two different text size classes on the same element, in which case whichever appears later in the compiled stylesheet takes effect. Avoiding duplicate prefixes on one element prevents this issue entirely.</div>
+    </div>
+  </section>
+
+  <section id="summary">
+    <h2><span class="no">✓</span>Summary</h2>
+    <div class="section-line"></div>
+    <div class="summary-box">
+      <ul class="notes-list">
+        <li>Tailwind is utility-first: one class, one CSS property, applied directly in HTML.</li>
+        <li>The CDN script tag is sufficient for learning, no installation required.</li>
+        <li>Most classes follow the pattern <code>property-value</code>, which makes many classes guessable.</li>
+        <li>Text size uses a named scale (<code>text-sm</code> to <code>text-9xl</code>), not raw pixel values.</li>
+        <li>Leading controls line height, tracking controls letter spacing, they are not interchangeable.</li>
+        <li>Color classes follow <code>property-color-shade</code>, with 11 shades from 50 to 950 for every color.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="end">
+    Module 1 &amp; 2 Notes · Tailwind CSS Track · Nexcore Institute of Technology<br>
+    Next: Module 3 — Box Model, Spacing &amp; Arbitrary Values
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 5 Notes — Grid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0F14; --bg-card:#141B24; --line:#232C3A;
+    --text:#E8EDF2; --text-dim:#93A1B5;
+    --sky:#38BDF8; --amber:#F59E0B; --emerald:#34D399; --rose:#FB7185;
+    --mono:'JetBrains Mono',monospace; --display:'Space Grotesk',sans-serif; --body:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--bg); color:var(--text); font-family:var(--body); line-height:1.7; }
+  ::selection{ background:var(--sky); color:#04121C; }
+  .wrap{ max-width:760px; margin:0 auto; padding:56px 32px 100px; }
+
+  header.page-head{ margin-bottom:44px; border-bottom:1px solid var(--line); padding-bottom:28px; }
+  .eyebrow{ font-family:var(--mono); font-size:.72rem; color:var(--sky); letter-spacing:.08em; text-transform:uppercase; margin-bottom:10px; }
+  h1{ font-family:var(--display); font-size:1.9rem; font-weight:700; letter-spacing:-.01em; margin-bottom:8px; }
+  .subhead{ color:var(--text-dim); font-size:.92rem; }
+
+  nav.toc{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:18px 20px; margin-bottom:50px; }
+  nav.toc .toc-label{ font-family:var(--mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--text-dim); margin-bottom:10px; }
+  nav.toc ol{ list-style:none; counter-reset:toc; display:grid; gap:5px; }
+  nav.toc li{ counter-increment:toc; font-size:.87rem; }
+  nav.toc li::before{ content:counter(toc) "."; color:var(--sky); font-family:var(--mono); margin-right:8px; width:16px; display:inline-block; }
+  nav.toc a{ color:var(--text); text-decoration:none; }
+  nav.toc a:hover{ color:var(--sky); }
+
+  section{ margin-bottom:56px; scroll-margin-top:20px; }
+
+  h2{ font-family:var(--display); font-size:1.4rem; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:10px; }
+  h2 .no{ font-family:var(--mono); font-size:.78rem; color:var(--bg); background:var(--sky); width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .section-line{ height:1px; background:var(--line); margin:12px 0 20px; }
+
+  h3{ font-family:var(--body); font-size:1rem; font-weight:600; margin:22px 0 8px; color:var(--text); }
+
+  p{ font-size:.94rem; color:var(--text-dim); margin-bottom:12px; }
+  p strong{ color:var(--text); font-weight:600; }
+
+  code{ font-family:var(--mono); background:var(--bg-card); border:1px solid var(--line); color:var(--sky); padding:1px 6px; border-radius:5px; font-size:.85em; }
+
+  ul.notes-list, ol.notes-list{ margin:10px 0 16px 0; padding-left:0; list-style:none; }
+  ul.notes-list li, ol.notes-list li{ font-size:.93rem; color:var(--text-dim); padding-left:20px; position:relative; margin-bottom:8px; }
+  ul.notes-list li::before{ content:'–'; position:absolute; left:0; color:var(--sky); }
+  ol.notes-list{ counter-reset:step; }
+  ol.notes-list li{ counter-increment:step; }
+  ol.notes-list li::before{ content:counter(step) '.'; position:absolute; left:0; color:var(--sky); font-family:var(--mono); font-size:.85em; }
+  li strong{ color:var(--text); }
+
+  table{ width:100%; border-collapse:collapse; margin:16px 0 8px; font-size:.87rem; }
+  th{ text-align:left; font-family:var(--mono); font-weight:500; font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; color:var(--text-dim); padding:9px 12px; border-bottom:1px solid var(--line); }
+  td{ padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--text-dim); }
+  tr:last-child td{ border-bottom:none; }
+  td code{ color:var(--sky); }
+  td strong{ color:var(--text); }
+
+  pre.code-block{
+    font-family:var(--mono); font-size:.83rem; color:var(--emerald);
+    background:var(--bg-card); border:1px solid var(--line); border-radius:10px;
+    padding:16px 18px; overflow-x:auto; margin:14px 0 18px;
+  }
+
+  .note{ border-left:3px solid var(--sky); background:rgba(56,189,248,.06); padding:12px 16px; border-radius:0 8px 8px 0; margin:16px 0; font-size:.88rem; color:var(--text-dim); }
+  .note strong{ color:var(--sky); }
+  .warn{ border-left:3px solid var(--amber); background:rgba(245,158,11,.06); padding:12px 16px; border-radius:0 8px 8px 0; margin:16px 0; font-size:.88rem; color:var(--text-dim); }
+  .warn strong{ color:var(--amber); }
+
+  .qa-block{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin-bottom:12px; }
+  .qa-q{ font-size:.9rem; font-weight:600; color:var(--text); margin-bottom:6px; }
+  .qa-q .tag{ font-family:var(--mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.05em; padding:2px 7px; border-radius:5px; margin-right:8px; background:rgba(56,189,248,.15); color:var(--sky); }
+  .qa-q .tag.myth{ background:rgba(251,113,133,.15); color:var(--rose); }
+  .qa-a{ font-size:.87rem; color:var(--text-dim); }
+
+  /* Grid diagrams */
+  .diagram{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:18px; margin:16px 0; }
+  .diagram-label{ font-family:var(--mono); font-size:.68rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:.05em; margin-bottom:10px; }
+  .grid-demo{ display:grid; gap:8px; background:var(--bg); border:1px dashed var(--line); border-radius:8px; padding:10px; }
+  .grid-demo.cols-2{ grid-template-columns:repeat(2,1fr); }
+  .grid-demo.cols-3{ grid-template-columns:repeat(3,1fr); }
+  .grid-demo.cols-4{ grid-template-columns:repeat(4,1fr); }
+  .grid-demo .cell{ background:var(--sky); color:#04121C; font-family:var(--mono); font-size:.75rem; font-weight:600; display:flex; align-items:center; justify-content:center; border-radius:6px; padding:16px 8px; }
+  .grid-demo .cell.span2{ grid-column:span 2; background:var(--emerald); }
+  .grid-demo .cell.span3{ grid-column:span 3; background:var(--emerald); }
+  .diagram-caption{ font-size:.78rem; color:var(--text-dim); margin-top:8px; font-family:var(--mono); }
+
+  .decision-table td.grid-col{ color:var(--emerald); font-weight:600; }
+  .decision-table td.flex-col{ color:var(--sky); font-weight:600; }
+
+  .summary-box{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:20px 22px; margin-top:10px; }
+  .summary-box ul.notes-list li::before{ content:'✓'; color:var(--emerald); }
+
+  footer.end{ text-align:center; padding:36px 20px; color:var(--text-dim); font-size:.82rem; border-top:1px solid var(--line); margin-top:40px; }
+
+  ::-webkit-scrollbar{ width:9px; height:9px; }
+  ::-webkit-scrollbar-track{ background:var(--bg); }
+  ::-webkit-scrollbar-thumb{ background:var(--line); border-radius:6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page-head">
+    <div class="eyebrow">Module 5 — Notes</div>
+    <h1>Grid</h1>
+    <p class="subhead">Tailwind CSS · Nexcore Institute of Technology · Beginner Track</p>
+  </header>
+
+  <nav class="toc">
+    <div class="toc-label">Contents</div>
+    <ol>
+      <li><a href="#grid-container">Grid Container</a></li>
+      <li><a href="#columns">Defining Columns</a></li>
+      <li><a href="#spanning">Spanning Columns</a></li>
+      <li><a href="#gap">Gap in Grid</a></li>
+      <li><a href="#choosing">Grid vs Flex — When to Use Which</a></li>
+      <li><a href="#qa">Common Questions &amp; Misconceptions</a></li>
+      <li><a href="#summary">Summary</a></li>
+    </ol>
+  </nav>
+
+  <section id="grid-container">
+    <h2><span class="no">1</span>Grid Container</h2>
+    <div class="section-line"></div>
+    <p>Adding <code>grid</code> to an element turns it into a grid container. Unlike <code>flex</code>, applying <code>grid</code> alone does not automatically arrange children into a visible layout, a column structure still needs to be defined.</p>
+
+    <pre class="code-block">&lt;div class="grid grid-cols-3 gap-4"&gt;
+  &lt;div class="bg-sky-500 p-4"&gt;One&lt;/div&gt;
+  &lt;div class="bg-sky-500 p-4"&gt;Two&lt;/div&gt;
+  &lt;div class="bg-sky-500 p-4"&gt;Three&lt;/div&gt;
+&lt;/div&gt;</pre>
+
+    <div class="warn"><strong>Key difference from flex:</strong> <code>flex</code> by itself produces a working row layout. <code>grid</code> by itself produces a single column of stacked, full-width children, since no column count has been defined yet. <code>grid-cols-*</code> is what actually creates the visible grid structure.</div>
+  </section>
+
+  <section id="columns">
+    <h2><span class="no">2</span>Defining Columns</h2>
+    <div class="section-line"></div>
+    <p><code>grid-cols-{n}</code> splits the container into <code>n</code> equal-width columns. Every direct child is placed into the next available cell, left to right, top to bottom, automatically.</p>
+
+    <table>
+      <tr><th>Class</th><th>Effect</th></tr>
+      <tr><td><code>grid-cols-2</code></td><td>Two equal-width columns</td></tr>
+      <tr><td><code>grid-cols-3</code></td><td>Three equal-width columns</td></tr>
+      <tr><td><code>grid-cols-4</code></td><td>Four equal-width columns</td></tr>
+      <tr><td><code>grid-cols-12</code></td><td>Twelve columns, commonly used as a flexible base grid for custom layouts</td></tr>
+    </table>
+
+    <div class="diagram">
+      <div class="diagram-label">grid-cols-3, six children</div>
+      <div class="grid-demo cols-3">
+        <div class="cell">1</div><div class="cell">2</div><div class="cell">3</div>
+        <div class="cell">4</div><div class="cell">5</div><div class="cell">6</div>
+      </div>
+      <div class="diagram-caption">Children wrap automatically onto a new row once three columns are filled</div>
+    </div>
+
+    <p>Unlike flex, there is no manual wrap class needed for this row-to-row behavior. It happens automatically as soon as a column count is set and there are more children than columns.</p>
+  </section>
+
+  <section id="spanning">
+    <h2><span class="no">3</span>Spanning Columns</h2>
+    <div class="section-line"></div>
+    <p>A single child can be made to occupy more than one column using <code>col-span-{n}</code>, applied to that child, not the container.</p>
+
+    <table>
+      <tr><th>Class</th><th>Effect</th></tr>
+      <tr><td><code>col-span-2</code></td><td>This item stretches across 2 columns instead of 1</td></tr>
+      <tr><td><code>col-span-full</code></td><td>This item stretches across every column in the row</td></tr>
+    </table>
+
+    <pre class="code-block">&lt;div class="grid grid-cols-3 gap-4"&gt;
+  &lt;div class="col-span-2 bg-emerald-500 p-4"&gt;Wide&lt;/div&gt;
+  &lt;div class="bg-sky-500 p-4"&gt;Normal&lt;/div&gt;
+&lt;/div&gt;</pre>
+
+    <div class="diagram">
+      <div class="diagram-label">First item: col-span-2, inside grid-cols-3</div>
+      <div class="grid-demo cols-3">
+        <div class="cell span2">Wide (span 2)</div>
+        <div class="cell">Normal</div>
+      </div>
+    </div>
+
+    <div class="note"><strong>Key point:</strong> the span number cannot exceed the total column count of the container. A <code>col-span-4</code> inside a <code>grid-cols-3</code> container will not overflow visually, it gets constrained to the available columns, but it defeats the intended layout, so span values should always be checked against the container's column count.</div>
+
+    <div class="note"><strong>Good to know (not required at this stage):</strong> a newer utility, <code>grid-cols-subgrid</code>, lets a nested grid inherit the exact column tracks of its parent grid instead of defining its own. This is useful for keeping deeply nested grid items aligned to an outer grid, but it is an advanced case and not something a beginner project needs yet. It is mentioned here only so the term is recognized if seen in other code.</div>
+  </section>
+
+  <section id="gap">
+    <h2><span class="no">4</span>Gap in Grid</h2>
+    <div class="section-line"></div>
+    <p><code>gap-*</code> works identically in grid as it does in flex, using the same spacing scale from Module 3. It adds space between cells, both horizontally and vertically, without adding space around the outer edge of the container.</p>
+
+    <table>
+      <tr><th>Class</th><th>Effect</th></tr>
+      <tr><td><code>gap-4</code></td><td>Equal spacing between rows and columns</td></tr>
+      <tr><td><code>gap-x-4</code></td><td>Horizontal spacing only, between columns</td></tr>
+      <tr><td><code>gap-y-4</code></td><td>Vertical spacing only, between rows</td></tr>
+    </table>
+  </section>
+
+  <section id="choosing">
+    <h2><span class="no">5</span>Grid vs Flex — When to Use Which</h2>
+    <div class="section-line"></div>
+    <p>Both create layouts, but they solve different problems. The core distinction: flex arranges items along a single line (row or column) and lets content decide sizing. Grid arranges items into a defined two-dimensional structure of rows and columns, decided upfront.</p>
+
+    <table class="decision-table">
+      <tr><th>Situation</th><th>Better fit</th></tr>
+      <tr><td>A navbar with logo, links, and a button in one row</td><td class="flex-col">Flex</td></tr>
+      <tr><td>A photo gallery of evenly-sized tiles</td><td class="grid-col">Grid</td></tr>
+      <tr><td>A single row of buttons that should space out evenly</td><td class="flex-col">Flex</td></tr>
+      <tr><td>A dashboard layout with a sidebar and a main content area of defined proportions</td><td class="grid-col">Grid</td></tr>
+      <tr><td>Centering one item inside a box</td><td class="flex-col">Flex</td></tr>
+      <tr><td>A pricing table with three equal-width plan cards</td><td class="grid-col">Grid</td></tr>
+    </table>
+
+    <div class="note"><strong>Rule of thumb:</strong> if the layout is fundamentally a single row or single column of items, reach for flex first. If the layout needs to be thought of as a grid, rows and columns together, reach for grid.</div>
+  </section>
+
+  <section id="qa">
+    <h2><span class="no">?</span>Common Questions &amp; Misconceptions</h2>
+    <div class="section-line"></div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>Adding grid alone arranges children automatically, the same way flex does.</div>
+      <div class="qa-a">Incorrect. flex alone produces a working row layout. grid alone produces a single stacked column, since no column count has been defined. grid-cols-* is required to see the actual grid structure.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>Do grid children need a wrap class to move to a new row?</div>
+      <div class="qa-a">No. Once a column count is set with grid-cols-*, extra children automatically flow onto new rows. This is different from flex, where flex-wrap must be added explicitly.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>col-span-* is applied to the grid container.</div>
+      <div class="qa-a">It is applied to the individual child that should stretch across multiple columns, not to the container itself. The container only needs grid and grid-cols-*.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>What happens if col-span-4 is used inside a grid-cols-3 container?</div>
+      <div class="qa-a">The span value gets constrained by the available columns rather than overflowing visibly, but the intended layout is not achieved as written. Span values should always stay within the container's defined column count.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>Grid and flex are interchangeable, pick whichever is familiar.</div>
+      <div class="qa-a">They solve different structural problems. Flex is one-dimensional, a single row or column. Grid is two-dimensional, rows and columns together, defined upfront. Using flex to fake a grid or grid to fake a simple row both lead to unnecessary extra classes.</div>
+    </div>
+  </section>
+
+  <section id="summary">
+    <h2><span class="no">✓</span>Summary</h2>
+    <div class="section-line"></div>
+    <div class="summary-box">
+      <ul class="notes-list">
+        <li><code>grid</code> creates a grid container, but needs <code>grid-cols-*</code> to actually define columns.</li>
+        <li>Children automatically flow into the next cell and wrap onto new rows, no wrap class required.</li>
+        <li><code>col-span-{n}</code> is applied to a child, making it stretch across multiple columns.</li>
+        <li><code>gap-*</code> spaces cells apart using the same spacing scale as Module 3, without adding space at the container's edge.</li>
+        <li>Flex suits single-row or single-column layouts. Grid suits layouts that need rows and columns defined together.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="end">
+    Module 5 Notes · Tailwind CSS Track · Nexcore Institute of Technology<br>
+    Next: Module 6 — States &amp; Interactivity
+  </footer>
+
+</div>
+</body>
+</html>

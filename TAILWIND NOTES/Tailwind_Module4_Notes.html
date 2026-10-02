@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 4 Notes — Display &amp; Flexbox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0F14; --bg-card:#141B24; --line:#232C3A;
+    --text:#E8EDF2; --text-dim:#93A1B5;
+    --sky:#38BDF8; --amber:#F59E0B; --emerald:#34D399; --rose:#FB7185;
+    --mono:'JetBrains Mono',monospace; --display:'Space Grotesk',sans-serif; --body:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--bg); color:var(--text); font-family:var(--body); line-height:1.7; }
+  ::selection{ background:var(--sky); color:#04121C; }
+  .wrap{ max-width:760px; margin:0 auto; padding:56px 32px 100px; }
+
+  header.page-head{ margin-bottom:44px; border-bottom:1px solid var(--line); padding-bottom:28px; }
+  .eyebrow{ font-family:var(--mono); font-size:.72rem; color:var(--sky); letter-spacing:.08em; text-transform:uppercase; margin-bottom:10px; }
+  h1{ font-family:var(--display); font-size:1.9rem; font-weight:700; letter-spacing:-.01em; margin-bottom:8px; }
+  .subhead{ color:var(--text-dim); font-size:.92rem; }
+
+  nav.toc{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:18px 20px; margin-bottom:50px; }
+  nav.toc .toc-label{ font-family:var(--mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--text-dim); margin-bottom:10px; }
+  nav.toc ol{ list-style:none; counter-reset:toc; display:grid; gap:5px; }
+  nav.toc li{ counter-increment:toc; font-size:.87rem; }
+  nav.toc li::before{ content:counter(toc) "."; color:var(--sky); font-family:var(--mono); margin-right:8px; width:16px; display:inline-block; }
+  nav.toc a{ color:var(--text); text-decoration:none; }
+  nav.toc a:hover{ color:var(--sky); }
+
+  section{ margin-bottom:56px; scroll-margin-top:20px; }
+
+  h2{ font-family:var(--display); font-size:1.4rem; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:10px; }
+  h2 .no{ font-family:var(--mono); font-size:.78rem; color:var(--bg); background:var(--sky); width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .section-line{ height:1px; background:var(--line); margin:12px 0 20px; }
+
+  h3{ font-family:var(--body); font-size:1rem; font-weight:600; margin:22px 0 8px; color:var(--text); }
+
+  p{ font-size:.94rem; color:var(--text-dim); margin-bottom:12px; }
+  p strong{ color:var(--text); font-weight:600; }
+
+  code{ font-family:var(--mono); background:var(--bg-card); border:1px solid var(--line); color:var(--sky); padding:1px 6px; border-radius:5px; font-size:.85em; }
+
+  ul.notes-list, ol.notes-list{ margin:10px 0 16px 0; padding-left:0; list-style:none; }
+  ul.notes-list li, ol.notes-list li{ font-size:.93rem; color:var(--text-dim); padding-left:20px; position:relative; margin-bottom:8px; }
+  ul.notes-list li::before{ content:'–'; position:absolute; left:0; color:var(--sky); }
+  ol.notes-list{ counter-reset:step; }
+  ol.notes-list li{ counter-increment:step; }
+  ol.notes-list li::before{ content:counter(step) '.'; position:absolute; left:0; color:var(--sky); font-family:var(--mono); font-size:.85em; }
+  li strong{ color:var(--text); }
+
+  table{ width:100%; border-collapse:collapse; margin:16px 0 8px; font-size:.87rem; }
+  th{ text-align:left; font-family:var(--mono); font-weight:500; font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; color:var(--text-dim); padding:9px 12px; border-bottom:1px solid var(--line); }
+  td{ padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--text-dim); }
+  tr:last-child td{ border-bottom:none; }
+  td code{ color:var(--sky); }
+  td strong{ color:var(--text); }
+
+  pre.code-block{
+    font-family:var(--mono); font-size:.83rem; color:var(--emerald);
+    background:var(--bg-card); border:1px solid var(--line); border-radius:10px;
+    padding:16px 18px; overflow-x:auto; margin:14px 0 18px;
+  }
+
+  .note{ border-left:3px solid var(--sky); background:rgba(56,189,248,.06); padding:12px 16px; border-radius:0 8px 8px 0; margin:16px 0; font-size:.88rem; color:var(--text-dim); }
+  .note strong{ color:var(--sky); }
+  .warn{ border-left:3px solid var(--amber); background:rgba(245,158,11,.06); padding:12px 16px; border-radius:0 8px 8px 0; margin:16px 0; font-size:.88rem; color:var(--text-dim); }
+  .warn strong{ color:var(--amber); }
+
+  .qa-block{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin-bottom:12px; }
+  .qa-q{ font-size:.9rem; font-weight:600; color:var(--text); margin-bottom:6px; }
+  .qa-q .tag{ font-family:var(--mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.05em; padding:2px 7px; border-radius:5px; margin-right:8px; background:rgba(56,189,248,.15); color:var(--sky); }
+  .qa-q .tag.myth{ background:rgba(251,113,133,.15); color:var(--rose); }
+  .qa-a{ font-size:.87rem; color:var(--text-dim); }
+
+  /* Visual flex diagrams (static, illustrative) */
+  .diagram{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:18px; margin:16px 0; }
+  .diagram-label{ font-family:var(--mono); font-size:.68rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:.05em; margin-bottom:10px; }
+  .flex-demo{ display:flex; gap:8px; background:var(--bg); border:1px dashed var(--line); border-radius:8px; padding:10px; min-height:60px; }
+  .flex-demo .box{ background:var(--sky); color:#04121C; font-family:var(--mono); font-size:.75rem; font-weight:600; display:flex; align-items:center; justify-content:center; border-radius:6px; padding:10px 14px; }
+  .flex-demo.justify-center{ justify-content:center; }
+  .flex-demo.justify-between{ justify-content:space-between; }
+  .flex-demo.justify-end{ justify-content:flex-end; }
+  .flex-demo.items-center{ align-items:center; min-height:90px; }
+  .flex-demo.items-start{ align-items:flex-start; min-height:90px; }
+  .flex-demo.items-end{ align-items:flex-end; min-height:90px; }
+  .flex-demo.col{ flex-direction:column; }
+  .diagram-caption{ font-size:.78rem; color:var(--text-dim); margin-top:8px; font-family:var(--mono); }
+
+  .summary-box{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:20px 22px; margin-top:10px; }
+  .summary-box ul.notes-list li::before{ content:'✓'; color:var(--emerald); }
+
+  footer.end{ text-align:center; padding:36px 20px; color:var(--text-dim); font-size:.82rem; border-top:1px solid var(--line); margin-top:40px; }
+
+  ::-webkit-scrollbar{ width:9px; height:9px; }
+  ::-webkit-scrollbar-track{ background:var(--bg); }
+  ::-webkit-scrollbar-thumb{ background:var(--line); border-radius:6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page-head">
+    <div class="eyebrow">Module 4 — Notes</div>
+    <h1>Display &amp; Flexbox</h1>
+    <p class="subhead">Tailwind CSS · Nexcore Institute of Technology · Beginner Track</p>
+  </header>
+
+  <nav class="toc">
+    <div class="toc-label">Contents</div>
+    <ol>
+      <li><a href="#display">Display Types</a></li>
+      <li><a href="#flex-setup">Flex Container Setup</a></li>
+      <li><a href="#direction">Flex Direction</a></li>
+      <li><a href="#justify">Justify Content (Main Axis)</a></li>
+      <li><a href="#items">Align Items (Cross Axis)</a></li>
+      <li><a href="#growth">Growth, Gap &amp; Wrap</a></li>
+      <li><a href="#qa">Common Questions &amp; Misconceptions</a></li>
+      <li><a href="#summary">Summary</a></li>
+    </ol>
+  </nav>
+
+  <section id="display">
+    <h2><span class="no">1</span>Display Types</h2>
+    <div class="section-line"></div>
+    <p>The <code>display</code> property decides how an element behaves in the page layout: whether it takes a full line, sits inline with text, or becomes a container that arranges its children.</p>
+
+    <table>
+      <tr><th>Class</th><th>Effect</th></tr>
+      <tr><td><code>block</code></td><td>Takes up the full width available, always starts on a new line</td></tr>
+      <tr><td><code>inline-block</code></td><td>Sits inline with surrounding content, but still accepts width/height/padding</td></tr>
+      <tr><td><code>hidden</code></td><td>Removes the element from the page entirely (no space reserved)</td></tr>
+      <tr><td><code>flex</code></td><td>Turns the element into a flex container, arranging its direct children in a row by default</td></tr>
+    </table>
+
+    <div class="note"><strong>Key distinction:</strong> a plain inline element (like a default <code>&lt;span&gt;</code>) ignores width and height. <code>inline-block</code> exists specifically to keep inline positioning while still allowing size control.</div>
+  </section>
+
+  <section id="flex-setup">
+    <h2><span class="no">2</span>Flex Container Setup</h2>
+    <div class="section-line"></div>
+    <p>Adding <code>flex</code> to an element does two things at once: it makes that element a flex container, and it automatically arranges its direct children into a row, side by side, with no extra class needed for the row itself.</p>
+
+    <pre class="code-block">&lt;div class="flex bg-slate-800 p-4 gap-4"&gt;
+  &lt;div class="bg-sky-500 p-4"&gt;One&lt;/div&gt;
+  &lt;div class="bg-sky-500 p-4"&gt;Two&lt;/div&gt;
+  &lt;div class="bg-sky-500 p-4"&gt;Three&lt;/div&gt;
+&lt;/div&gt;</pre>
+
+    <div class="diagram">
+      <div class="diagram-label">Result</div>
+      <div class="flex-demo">
+        <div class="box">One</div>
+        <div class="box">Two</div>
+        <div class="box">Three</div>
+      </div>
+      <div class="diagram-caption">flex places children in a row automatically, no direction class required</div>
+    </div>
+
+    <div class="warn"><strong>Important:</strong> <code>flex</code> only affects the <strong>direct children</strong> of the element it's applied to. Grandchildren nested further inside are not automatically arranged, they follow their own parent's rules.</div>
+  </section>
+
+  <section id="direction">
+    <h2><span class="no">3</span>Flex Direction</h2>
+    <div class="section-line"></div>
+    <p>By default, a flex container arranges children in a row. This can be switched to a column.</p>
+
+    <table>
+      <tr><th>Class</th><th>Effect</th></tr>
+      <tr><td><code>flex-row</code></td><td>Children arranged left to right (this is the default, so writing it explicitly is optional)</td></tr>
+      <tr><td><code>flex-col</code></td><td>Children arranged top to bottom</td></tr>
+    </table>
+
+    <div class="diagram">
+      <div class="diagram-label">flex-col</div>
+      <div class="flex-demo col">
+        <div class="box">One</div>
+        <div class="box">Two</div>
+        <div class="box">Three</div>
+      </div>
+    </div>
+
+    <div class="note"><strong>Key point:</strong> direction changes which axis is "main" and which is "cross." In a row, main axis is horizontal. In a column, main axis is vertical. This directly changes what <code>justify-*</code> and <code>items-*</code> do, covered next.</div>
+  </section>
+
+  <section id="justify">
+    <h2><span class="no">4</span>Justify Content (Main Axis)</h2>
+    <div class="section-line"></div>
+    <p><code>justify-*</code> controls spacing along the <strong>main axis</strong> — horizontal in a row, vertical in a column.</p>
+
+    <table>
+      <tr><th>Class</th><th>Effect</th></tr>
+      <tr><td><code>justify-start</code></td><td>Children packed at the start (default behavior)</td></tr>
+      <tr><td><code>justify-center</code></td><td>Children packed together in the center</td></tr>
+      <tr><td><code>justify-end</code></td><td>Children packed at the end</td></tr>
+      <tr><td><code>justify-between</code></td><td>Equal space distributed between children, none at the outer edges</td></tr>
+    </table>
+
+    <div class="diagram">
+      <div class="diagram-label">justify-center</div>
+      <div class="flex-demo justify-center">
+        <div class="box">One</div>
+        <div class="box">Two</div>
+      </div>
+    </div>
+    <div class="diagram">
+      <div class="diagram-label">justify-between</div>
+      <div class="flex-demo justify-between">
+        <div class="box">One</div>
+        <div class="box">Two</div>
+        <div class="box">Three</div>
+      </div>
+    </div>
+    <div class="diagram">
+      <div class="diagram-label">justify-end</div>
+      <div class="flex-demo justify-end">
+        <div class="box">One</div>
+        <div class="box">Two</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="items">
+    <h2><span class="no">5</span>Align Items (Cross Axis)</h2>
+    <div class="section-line"></div>
+    <p><code>items-*</code> controls alignment along the <strong>cross axis</strong> — the axis perpendicular to the main one. In a row, this means vertical alignment.</p>
+
+    <table>
+      <tr><th>Class</th><th>Effect</th></tr>
+      <tr><td><code>items-start</code></td><td>Children align to the top of the container</td></tr>
+      <tr><td><code>items-center</code></td><td>Children align to the vertical center</td></tr>
+      <tr><td><code>items-end</code></td><td>Children align to the bottom</td></tr>
+    </table>
+
+    <div class="diagram">
+      <div class="diagram-label">items-center (in a row, taller container)</div>
+      <div class="flex-demo items-center">
+        <div class="box" style="padding:6px 14px;">Short</div>
+        <div class="box" style="padding:22px 14px;">Taller</div>
+      </div>
+    </div>
+
+    <div class="warn"><strong>Most common confusion in this module:</strong> <code>justify-*</code> and <code>items-*</code> are not interchangeable and do not always mean "horizontal" and "vertical." Their meaning flips depending on <code>flex-direction</code>. In a row, justify is horizontal and items is vertical. In a column, this reverses, justify becomes vertical and items becomes horizontal.</div>
+  </section>
+
+  <section id="growth">
+    <h2><span class="no">6</span>Growth, Gap &amp; Wrap</h2>
+    <div class="section-line"></div>
+
+    <h3>flex-1</h3>
+    <p><code>flex-1</code> tells a child to grow and fill any remaining space in the container, shared equally with any other child that also has <code>flex-1</code>.</p>
+    <pre class="code-block">&lt;div class="flex gap-4"&gt;
+  &lt;div class="flex-1 bg-sky-500 p-4"&gt;Grows&lt;/div&gt;
+  &lt;div class="bg-slate-600 p-4"&gt;Fixed&lt;/div&gt;
+&lt;/div&gt;</pre>
+    <p>In this example, the second box stays at its natural content width, and the first box expands to take up all remaining space.</p>
+
+    <h3>gap</h3>
+    <p><code>gap-*</code> adds space between flex children, using the same spacing scale as padding and margin. This is different from margin because it does not add space outside the entire container, only between the items inside it.</p>
+
+    <h3>flex-wrap</h3>
+    <p>By default, flex children are forced onto a single line and will shrink to fit. <code>flex-wrap</code> allows children to move onto multiple lines once they run out of horizontal space.</p>
+
+    <table>
+      <tr><th>Class</th><th>Effect</th></tr>
+      <tr><td><code>flex-nowrap</code></td><td>Default. All children forced onto one line, shrinking if needed</td></tr>
+      <tr><td><code>flex-wrap</code></td><td>Children move to a new line once space runs out</td></tr>
+    </table>
+  </section>
+
+  <section id="qa">
+    <h2><span class="no">?</span>Common Questions &amp; Misconceptions</h2>
+    <div class="section-line"></div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>justify-* always means horizontal alignment.</div>
+      <div class="qa-a">Incorrect. justify-* controls the main axis, which is horizontal by default (flex-row) but becomes vertical if flex-col is applied. Always check the direction first.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>Why don't my grandchildren elements line up when I add flex to the outer parent?</div>
+      <div class="qa-a">flex only arranges direct children. Elements nested two or more levels deep are unaffected unless their own immediate parent also has flex applied.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>You need flex-row to make children appear in a row.</div>
+      <div class="qa-a">Not necessary. Row is the default direction the moment flex is applied. flex-row only needs to be written explicitly if overriding a column direction back to a row, such as at a specific breakpoint.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>What's the difference between gap and margin for spacing flex children?</div>
+      <div class="qa-a">gap only adds space between items, not around the outer edge of the container. Margin on individual children adds space around that specific child, which can create uneven or doubled-up spacing between neighbors.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>Why do my flex items shrink and squeeze together instead of wrapping to a new line?</div>
+      <div class="qa-a">This is default behavior. flex-nowrap is implied unless flex-wrap is explicitly added, so items are forced to fit on one line and shrink rather than move down.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>flex-1 makes an element take up the full container width by itself.</div>
+      <div class="qa-a">flex-1 makes an element grow to fill remaining space, shared with any sibling that also has flex-1. If only one child has it and others have fixed sizes, flex-1 fills whatever space is left over, not the entire container.</div>
+    </div>
+  </section>
+
+  <section id="summary">
+    <h2><span class="no">✓</span>Summary</h2>
+    <div class="section-line"></div>
+    <div class="summary-box">
+      <ul class="notes-list">
+        <li><code>flex</code> turns an element into a flex container and arranges direct children in a row by default.</li>
+        <li><code>flex-row</code> / <code>flex-col</code> set the direction, which decides which axis is "main" and which is "cross."</li>
+        <li><code>justify-*</code> controls the main axis. <code>items-*</code> controls the cross axis. Their real-world direction depends on flex-direction.</li>
+        <li><code>flex-1</code> grows an item to fill remaining space, shared among any siblings with the same class.</li>
+        <li><code>gap-*</code> spaces items apart without adding space around the outer container edge.</li>
+        <li><code>flex-wrap</code> allows children to move onto new lines once space runs out; without it, items shrink to fit one line.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="end">
+    Module 4 Notes · Tailwind CSS Track · Nexcore Institute of Technology<br>
+    Next: Module 5 — Grid
+  </footer>
+
+</div>
+</body>
+</html>

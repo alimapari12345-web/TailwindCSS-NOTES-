@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 7 Notes — Responsive Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0F14; --bg-card:#141B24; --line:#232C3A;
+    --text:#E8EDF2; --text-dim:#93A1B5;
+    --sky:#38BDF8; --amber:#F59E0B; --emerald:#34D399; --rose:#FB7185;
+    --mono:'JetBrains Mono',monospace; --display:'Space Grotesk',sans-serif; --body:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--bg); color:var(--text); font-family:var(--body); line-height:1.7; }
+  ::selection{ background:var(--sky); color:#04121C; }
+  .wrap{ max-width:760px; margin:0 auto; padding:56px 32px 100px; }
+
+  header.page-head{ margin-bottom:44px; border-bottom:1px solid var(--line); padding-bottom:28px; }
+  .eyebrow{ font-family:var(--mono); font-size:.72rem; color:var(--sky); letter-spacing:.08em; text-transform:uppercase; margin-bottom:10px; }
+  h1{ font-family:var(--display); font-size:1.9rem; font-weight:700; letter-spacing:-.01em; margin-bottom:8px; }
+  .subhead{ color:var(--text-dim); font-size:.92rem; }
+
+  .verified{ border-left:3px solid var(--emerald); background:rgba(52,211,153,.06); padding:12px 16px; border-radius:0 8px 8px 0; margin-bottom:40px; font-size:.85rem; color:var(--text-dim); }
+  .verified strong{ color:var(--emerald); }
+
+  nav.toc{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:18px 20px; margin-bottom:50px; }
+  nav.toc .toc-label{ font-family:var(--mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--text-dim); margin-bottom:10px; }
+  nav.toc ol{ list-style:none; counter-reset:toc; display:grid; gap:5px; }
+  nav.toc li{ counter-increment:toc; font-size:.87rem; }
+  nav.toc li::before{ content:counter(toc) "."; color:var(--sky); font-family:var(--mono); margin-right:8px; width:16px; display:inline-block; }
+  nav.toc a{ color:var(--text); text-decoration:none; }
+  nav.toc a:hover{ color:var(--sky); }
+
+  section{ margin-bottom:56px; scroll-margin-top:20px; }
+
+  h2{ font-family:var(--display); font-size:1.4rem; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:10px; }
+  h2 .no{ font-family:var(--mono); font-size:.78rem; color:var(--bg); background:var(--sky); width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .section-line{ height:1px; background:var(--line); margin:12px 0 20px; }
+
+  h3{ font-family:var(--body); font-size:1rem; font-weight:600; margin:22px 0 8px; color:var(--text); }
+
+  p{ font-size:.94rem; color:var(--text-dim); margin-bottom:12px; }
+  p strong{ color:var(--text); font-weight:600; }
+
+  code{ font-family:var(--mono); background:var(--bg-card); border:1px solid var(--line); color:var(--sky); padding:1px 6px; border-radius:5px; font-size:.85em; }
+
+  ul.notes-list, ol.notes-list{ margin:10px 0 16px 0; padding-left:0; list-style:none; }
+  ul.notes-list li, ol.notes-list li{ font-size:.93rem; color:var(--text-dim); padding-left:20px; position:relative; margin-bottom:8px; }
+  ul.notes-list li::before{ content:'–'; position:absolute; left:0; color:var(--sky); }
+  ol.notes-list{ counter-reset:step; }
+  ol.notes-list li{ counter-increment:step; }
+  ol.notes-list li::before{ content:counter(step) '.'; position:absolute; left:0; color:var(--sky); font-family:var(--mono); font-size:.85em; }
+  li strong{ color:var(--text); }
+
+  table{ width:100%; border-collapse:collapse; margin:16px 0 8px; font-size:.87rem; }
+  th{ text-align:left; font-family:var(--mono); font-weight:500; font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; color:var(--text-dim); padding:9px 12px; border-bottom:1px solid var(--line); }
+  td{ padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--text-dim); }
+  tr:last-child td{ border-bottom:none; }
+  td code{ color:var(--sky); }
+  td strong{ color:var(--text); }
+
+  pre.code-block{
+    font-family:var(--mono); font-size:.83rem; color:var(--emerald);
+    background:var(--bg-card); border:1px solid var(--line); border-radius:10px;
+    padding:16px 18px; overflow-x:auto; margin:14px 0 18px; white-space:pre-wrap;
+  }
+
+  .note{ border-left:3px solid var(--sky); background:rgba(56,189,248,.06); padding:12px 16px; border-radius:0 8px 8px 0; margin:16px 0; font-size:.88rem; color:var(--text-dim); }
+  .note strong{ color:var(--sky); }
+  .warn{ border-left:3px solid var(--amber); background:rgba(245,158,11,.06); padding:12px 16px; border-radius:0 8px 8px 0; margin:16px 0; font-size:.88rem; color:var(--text-dim); }
+  .warn strong{ color:var(--amber); }
+
+  .qa-block{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin-bottom:12px; }
+  .qa-q{ font-size:.9rem; font-weight:600; color:var(--text); margin-bottom:6px; }
+  .qa-q .tag{ font-family:var(--mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.05em; padding:2px 7px; border-radius:5px; margin-right:8px; background:rgba(56,189,248,.15); color:var(--sky); }
+  .qa-q .tag.myth{ background:rgba(251,113,133,.15); color:var(--rose); }
+  .qa-a{ font-size:.87rem; color:var(--text-dim); }
+
+  /* Breakpoint ruler diagram */
+  .ruler{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:20px; margin:18px 0; overflow-x:auto; }
+  .ruler-track{ display:flex; min-width:600px; height:52px; border-radius:8px; overflow:hidden; }
+  .ruler-seg{ display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:.72rem; font-weight:600; color:#04121C; }
+  .ruler-seg.base{ background:#334155; color:var(--text); flex:0.6; }
+  .ruler-seg.sm{ background:#7dd3fc; flex:0.7; }
+  .ruler-seg.md{ background:#38BDF8; flex:0.9; }
+  .ruler-seg.lg{ background:#0ea5e9; flex:1.1; }
+  .ruler-seg.xl{ background:#0284c7; flex:1.3; }
+  .ruler-seg.xxl{ background:#075985; color:white; flex:1.6; }
+  .ruler-labels{ display:flex; min-width:600px; margin-top:6px; }
+  .ruler-labels span{ font-family:var(--mono); font-size:.68rem; color:var(--text-dim); text-align:center; }
+  .ruler-labels .base{ flex:0.6; } .ruler-labels .sm{ flex:0.7; } .ruler-labels .md{ flex:0.9; }
+  .ruler-labels .lg{ flex:1.1; } .ruler-labels .xl{ flex:1.3; } .ruler-labels .xxl{ flex:1.6; }
+
+  .summary-box{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:20px 22px; margin-top:10px; }
+  .summary-box ul.notes-list li::before{ content:'✓'; color:var(--emerald); }
+
+  footer.end{ text-align:center; padding:36px 20px; color:var(--text-dim); font-size:.82rem; border-top:1px solid var(--line); margin-top:40px; }
+
+  ::-webkit-scrollbar{ width:9px; height:9px; }
+  ::-webkit-scrollbar-track{ background:var(--bg); }
+  ::-webkit-scrollbar-thumb{ background:var(--line); border-radius:6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page-head">
+    <div class="eyebrow">Module 7 — Notes</div>
+    <h1>Responsive Design</h1>
+    <p class="subhead">Tailwind CSS · Nexcore Institute of Technology · Beginner Track</p>
+  </header>
+
+  <div class="verified"><strong>Verified against current Tailwind documentation</strong> before writing these notes. Breakpoint values and mobile-first behavior confirmed current.</div>
+
+  <nav class="toc">
+    <div class="toc-label">Contents</div>
+    <ol>
+      <li><a href="#breakpoints">Breakpoint Prefixes</a></li>
+      <li><a href="#mobile-first">The Mobile-First Mindset</a></li>
+      <li><a href="#patterns">Practical Responsive Patterns</a></li>
+      <li><a href="#combining">Combining with Earlier Modules</a></li>
+      <li><a href="#qa">Common Questions &amp; Misconceptions</a></li>
+      <li><a href="#summary">Summary</a></li>
+    </ol>
+  </nav>
+
+  <section id="breakpoints">
+    <h2><span class="no">1</span>Breakpoint Prefixes</h2>
+    <div class="section-line"></div>
+    <p>A breakpoint prefix makes a utility class apply only once the browser viewport reaches a certain width. Tailwind ships five default breakpoints.</p>
+
+    <table>
+      <tr><th>Prefix</th><th>Minimum width</th><th>Typical device</th></tr>
+      <tr><td><code>sm:</code></td><td>640px</td><td>Large phones, small tablets</td></tr>
+      <tr><td><code>md:</code></td><td>768px</td><td>Tablets</td></tr>
+      <tr><td><code>lg:</code></td><td>1024px</td><td>Small laptops</td></tr>
+      <tr><td><code>xl:</code></td><td>1280px</td><td>Desktops</td></tr>
+      <tr><td><code>2xl:</code></td><td>1536px</td><td>Large desktops</td></tr>
+    </table>
+
+    <div class="ruler">
+      <div class="ruler-track">
+        <div class="ruler-seg base">0px+</div>
+        <div class="ruler-seg sm">640px</div>
+        <div class="ruler-seg md">768px</div>
+        <div class="ruler-seg lg">1024px</div>
+        <div class="ruler-seg xl">1280px</div>
+        <div class="ruler-seg xxl">1536px</div>
+      </div>
+      <div class="ruler-labels">
+        <span class="base">no prefix</span>
+        <span class="sm">sm:</span>
+        <span class="md">md:</span>
+        <span class="lg">lg:</span>
+        <span class="xl">xl:</span>
+        <span class="xxl">2xl:</span>
+      </div>
+    </div>
+
+    <pre class="code-block">&lt;img class="w-16 md:w-32 lg:w-48" src="..."&gt;</pre>
+    <p>Width is 16 (spacing scale) by default, becomes 32 once the screen is 768px or wider, and becomes 48 once it's 1024px or wider.</p>
+  </section>
+
+  <section id="mobile-first">
+    <h2><span class="no">2</span>The Mobile-First Mindset</h2>
+    <div class="section-line"></div>
+    <p>Tailwind's breakpoints are <strong>minimum-width</strong> based. An unprefixed class applies to every screen size, starting from the smallest. A prefixed class overrides it only from that breakpoint upward.</p>
+
+    <div class="note"><strong>This means the base (unprefixed) styles should always be written for mobile first</strong>, then adjusted upward for larger screens using prefixes. Writing desktop-first and trying to prefix downward goes against how the system is built, and is a common source of confusion when adapting old habits from other frameworks.</div>
+
+    <pre class="code-block">&lt;p class="text-sm md:text-base lg:text-lg"&gt;
+  Small on mobile, base size from tablets up, large from laptops up
+&lt;/p&gt;</pre>
+
+    <ol class="notes-list">
+      <li>Start by styling the element as it should look on the smallest screen, with no prefix.</li>
+      <li>Add <code>sm:</code>, <code>md:</code>, etc. only for the properties that need to change at larger sizes.</li>
+      <li>A property left unprefixed at a given breakpoint simply continues using whatever was last defined at a smaller breakpoint.</li>
+    </ol>
+  </section>
+
+  <section id="patterns">
+    <h2><span class="no">3</span>Practical Responsive Patterns</h2>
+    <div class="section-line"></div>
+
+    <h3>Stacking on mobile, row on desktop</h3>
+    <pre class="code-block">&lt;div class="flex flex-col md:flex-row gap-4"&gt;
+  &lt;div class="bg-slate-800 p-4"&gt;One&lt;/div&gt;
+  &lt;div class="bg-slate-800 p-4"&gt;Two&lt;/div&gt;
+&lt;/div&gt;</pre>
+    <p>Column layout by default (mobile), switching to a row once the screen is medium-sized or larger.</p>
+
+    <h3>Single column on mobile, grid on desktop</h3>
+    <pre class="code-block">&lt;div class="grid grid-cols-1 md:grid-cols-3 gap-4"&gt;
+  ...
+&lt;/div&gt;</pre>
+    <p>One column by default, three columns from <code>md:</code> upward. This is the standard way a card grid collapses gracefully on small screens.</p>
+
+    <h3>Hiding or showing elements at a breakpoint</h3>
+    <table>
+      <tr><th>Class</th><th>Effect</th></tr>
+      <tr><td><code>hidden md:block</code></td><td>Hidden on mobile, visible from <code>md:</code> upward</td></tr>
+      <tr><td><code>md:hidden</code></td><td>Visible on mobile, hidden from <code>md:</code> upward</td></tr>
+    </table>
+  </section>
+
+  <section id="combining">
+    <h2><span class="no">4</span>Combining with Earlier Modules</h2>
+    <div class="section-line"></div>
+    <p>Breakpoint prefixes work on any utility from any earlier module, spacing, color, typography, flex, and grid all support the same prefix pattern.</p>
+
+    <pre class="code-block">&lt;div class="p-4 sm:p-6 md:p-8 lg:p-12 bg-slate-900 rounded-lg"&gt;
+  Padding grows at each step up
+&lt;/div&gt;</pre>
+
+    <div class="note"><strong>Good to know:</strong> a <code>max-*</code> variant also exists for the reverse direction, for example <code>max-md:hidden</code> applies only below the md breakpoint, the opposite of <code>md:hidden</code>. This is useful for targeting a narrow range together with a normal breakpoint, such as <code>md:max-lg:block</code> to apply only between md and lg. Not essential for early responsive work, but worth recognizing if seen in other code.</div>
+  </section>
+
+  <section id="qa">
+    <h2><span class="no">?</span>Common Questions &amp; Misconceptions</h2>
+    <div class="section-line"></div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>md: means "only on medium screens," similar to a fixed range.</div>
+      <div class="qa-a">Incorrect. md: means 768px and wider, with no upper limit. Unless overridden by a larger breakpoint like lg: or xl:, an md: style keeps applying all the way up to the largest possible screen.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>Do I need to repeat every property at every breakpoint?</div>
+      <div class="qa-a">No. Only the properties that actually need to change at a given size need a prefixed class. Anything not overridden continues using the value from the last breakpoint where it was set, cascading upward.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>Prefixed classes should be written for desktop first, then adjusted down for mobile.</div>
+      <div class="qa-a">This goes against how Tailwind's breakpoints work. Unprefixed classes are the mobile/base style, and prefixes only add changes going upward from there. Attempting to write desktop-first and prefix downward does not match the min-width system and leads to layouts that don't behave as expected on small screens.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>What happens below the sm: breakpoint, is there a class for that?</div>
+      <div class="qa-a">There is no prefix for "below sm." The unprefixed, base classes already cover everything below the smallest breakpoint, that is the entire purpose of writing base styles without a prefix in the first place.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>Breakpoints only work with flex and grid layout classes.</div>
+      <div class="qa-a">Any utility class in the framework can take a breakpoint prefix, colors, font size, padding, border radius, and even less obvious properties like letter spacing can all change at a breakpoint.</div>
+    </div>
+  </section>
+
+  <section id="summary">
+    <h2><span class="no">✓</span>Summary</h2>
+    <div class="section-line"></div>
+    <div class="summary-box">
+      <ul class="notes-list">
+        <li>Five default breakpoints: <code>sm</code> (640px), <code>md</code> (768px), <code>lg</code> (1024px), <code>xl</code> (1280px), <code>2xl</code> (1536px).</li>
+        <li>Breakpoints are minimum-width based, a prefixed class applies from that width upward, with no built-in upper limit.</li>
+        <li>Unprefixed classes are the mobile/base style and apply to every screen size unless overridden.</li>
+        <li>Write base styles for mobile first, then add prefixes only for what needs to change at larger sizes.</li>
+        <li>Any utility class from any module can take a breakpoint prefix.</li>
+        <li><code>max-*</code> variants exist for targeting below a breakpoint or a specific range.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="end">
+    Module 7 Notes · Tailwind CSS Track · Nexcore Institute of Technology<br>
+    Next: Module 8 — Forms &amp; Component Building
+  </footer>
+
+</div>
+</body>
+</html>

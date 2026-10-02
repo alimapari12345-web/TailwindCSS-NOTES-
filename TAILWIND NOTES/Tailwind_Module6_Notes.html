@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 6 Notes — States &amp; Interactivity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0F14; --bg-card:#141B24; --line:#232C3A;
+    --text:#E8EDF2; --text-dim:#93A1B5;
+    --sky:#38BDF8; --amber:#F59E0B; --emerald:#34D399; --rose:#FB7185;
+    --mono:'JetBrains Mono',monospace; --display:'Space Grotesk',sans-serif; --body:'Inter',sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--bg); color:var(--text); font-family:var(--body); line-height:1.7; }
+  ::selection{ background:var(--sky); color:#04121C; }
+  .wrap{ max-width:760px; margin:0 auto; padding:56px 32px 100px; }
+
+  header.page-head{ margin-bottom:44px; border-bottom:1px solid var(--line); padding-bottom:28px; }
+  .eyebrow{ font-family:var(--mono); font-size:.72rem; color:var(--sky); letter-spacing:.08em; text-transform:uppercase; margin-bottom:10px; }
+  h1{ font-family:var(--display); font-size:1.9rem; font-weight:700; letter-spacing:-.01em; margin-bottom:8px; }
+  .subhead{ color:var(--text-dim); font-size:.92rem; }
+
+  nav.toc{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:18px 20px; margin-bottom:50px; }
+  nav.toc .toc-label{ font-family:var(--mono); font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--text-dim); margin-bottom:10px; }
+  nav.toc ol{ list-style:none; counter-reset:toc; display:grid; gap:5px; }
+  nav.toc li{ counter-increment:toc; font-size:.87rem; }
+  nav.toc li::before{ content:counter(toc) "."; color:var(--sky); font-family:var(--mono); margin-right:8px; width:16px; display:inline-block; }
+  nav.toc a{ color:var(--text); text-decoration:none; }
+  nav.toc a:hover{ color:var(--sky); }
+
+  section{ margin-bottom:56px; scroll-margin-top:20px; }
+
+  h2{ font-family:var(--display); font-size:1.4rem; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:10px; }
+  h2 .no{ font-family:var(--mono); font-size:.78rem; color:var(--bg); background:var(--sky); width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .section-line{ height:1px; background:var(--line); margin:12px 0 20px; }
+
+  h3{ font-family:var(--body); font-size:1rem; font-weight:600; margin:22px 0 8px; color:var(--text); }
+
+  p{ font-size:.94rem; color:var(--text-dim); margin-bottom:12px; }
+  p strong{ color:var(--text); font-weight:600; }
+
+  code{ font-family:var(--mono); background:var(--bg-card); border:1px solid var(--line); color:var(--sky); padding:1px 6px; border-radius:5px; font-size:.85em; }
+
+  ul.notes-list, ol.notes-list{ margin:10px 0 16px 0; padding-left:0; list-style:none; }
+  ul.notes-list li, ol.notes-list li{ font-size:.93rem; color:var(--text-dim); padding-left:20px; position:relative; margin-bottom:8px; }
+  ul.notes-list li::before{ content:'–'; position:absolute; left:0; color:var(--sky); }
+  ol.notes-list{ counter-reset:step; }
+  ol.notes-list li{ counter-increment:step; }
+  ol.notes-list li::before{ content:counter(step) '.'; position:absolute; left:0; color:var(--sky); font-family:var(--mono); font-size:.85em; }
+  li strong{ color:var(--text); }
+
+  table{ width:100%; border-collapse:collapse; margin:16px 0 8px; font-size:.87rem; }
+  th{ text-align:left; font-family:var(--mono); font-weight:500; font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; color:var(--text-dim); padding:9px 12px; border-bottom:1px solid var(--line); }
+  td{ padding:9px 12px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--text-dim); }
+  tr:last-child td{ border-bottom:none; }
+  td code{ color:var(--sky); }
+  td strong{ color:var(--text); }
+
+  pre.code-block{
+    font-family:var(--mono); font-size:.83rem; color:var(--emerald);
+    background:var(--bg-card); border:1px solid var(--line); border-radius:10px;
+    padding:16px 18px; overflow-x:auto; margin:14px 0 18px; white-space:pre-wrap;
+  }
+
+  .note{ border-left:3px solid var(--sky); background:rgba(56,189,248,.06); padding:12px 16px; border-radius:0 8px 8px 0; margin:16px 0; font-size:.88rem; color:var(--text-dim); }
+  .note strong{ color:var(--sky); }
+  .warn{ border-left:3px solid var(--amber); background:rgba(245,158,11,.06); padding:12px 16px; border-radius:0 8px 8px 0; margin:16px 0; font-size:.88rem; color:var(--text-dim); }
+  .warn strong{ color:var(--amber); }
+  .verified{ border-left:3px solid var(--emerald); background:rgba(52,211,153,.06); padding:12px 16px; border-radius:0 8px 8px 0; margin:16px 0; font-size:.85rem; color:var(--text-dim); }
+  .verified strong{ color:var(--emerald); }
+
+  .qa-block{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin-bottom:12px; }
+  .qa-q{ font-size:.9rem; font-weight:600; color:var(--text); margin-bottom:6px; }
+  .qa-q .tag{ font-family:var(--mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.05em; padding:2px 7px; border-radius:5px; margin-right:8px; background:rgba(56,189,248,.15); color:var(--sky); }
+  .qa-q .tag.myth{ background:rgba(251,113,133,.15); color:var(--rose); }
+  .qa-a{ font-size:.87rem; color:var(--text-dim); }
+
+  /* Live demo boxes (real CSS, not Tailwind, hand-coded to mirror behavior) */
+  .demo-box{
+    background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:22px;
+    margin:16px 0; display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap;
+  }
+  .demo-btn{
+    font-family:var(--body); font-weight:600; font-size:.88rem; color:white;
+    background:#6D28D9; padding:11px 22px; border-radius:8px; border:none; cursor:pointer;
+    transition:background-color .15s ease;
+  }
+  .demo-btn:hover{ background:#7C3AED; }
+  .demo-btn:active{ background:#5B21B6; }
+
+  .demo-input{
+    font-family:var(--body); font-size:.88rem; background:#1e293b; border:1px solid #334155;
+    color:var(--text); padding:10px 14px; border-radius:8px; outline:none; transition:border-color .15s;
+  }
+  .demo-input:focus{ border-color:var(--sky); box-shadow:0 0 0 3px rgba(56,189,248,.2); }
+
+  .demo-group{
+    background:#1e293b; border:1px solid #334155; border-radius:10px; padding:16px; cursor:pointer;
+    transition:background-color .15s;
+  }
+  .demo-group:hover{ background:#243244; }
+  .demo-group:hover .demo-group-text{ color:var(--sky); text-decoration:underline; }
+  .demo-group-text{ font-size:.85rem; color:var(--text-dim); transition:color .15s; }
+
+  .demo-toggle-label{ font-size:.8rem; color:var(--text-dim); cursor:pointer; user-select:none; }
+
+  .summary-box{ background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:20px 22px; margin-top:10px; }
+  .summary-box ul.notes-list li::before{ content:'✓'; color:var(--emerald); }
+
+  footer.end{ text-align:center; padding:36px 20px; color:var(--text-dim); font-size:.82rem; border-top:1px solid var(--line); margin-top:40px; }
+
+  ::-webkit-scrollbar{ width:9px; height:9px; }
+  ::-webkit-scrollbar-track{ background:var(--bg); }
+  ::-webkit-scrollbar-thumb{ background:var(--line); border-radius:6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page-head">
+    <div class="eyebrow">Module 6 — Notes</div>
+    <h1>States &amp; Interactivity</h1>
+    <p class="subhead">Tailwind CSS · Nexcore Institute of Technology · Beginner Track</p>
+  </header>
+
+  <div class="verified"><strong>Verified against current Tailwind documentation</strong> before writing these notes. Syntax below reflects the framework's present behavior.</div>
+
+  <nav class="toc">
+    <div class="toc-label">Contents</div>
+    <ol>
+      <li><a href="#pseudo">Pseudo-Class Variants</a></li>
+      <li><a href="#group">Group Variants</a></li>
+      <li><a href="#peer">Peer Variants</a></li>
+      <li><a href="#dark">Dark Mode</a></li>
+      <li><a href="#transitions">Transitions &amp; Basic Animation</a></li>
+      <li><a href="#stacking">Stacking Variants</a></li>
+      <li><a href="#qa">Common Questions &amp; Misconceptions</a></li>
+      <li><a href="#summary">Summary</a></li>
+    </ol>
+  </nav>
+
+  <section id="pseudo">
+    <h2><span class="no">1</span>Pseudo-Class Variants</h2>
+    <div class="section-line"></div>
+    <p>A variant is a prefix that makes a utility class apply only under a specific condition instead of always. Pseudo-class variants apply based on interaction state, matching CSS pseudo-classes like <code>:hover</code> and <code>:focus</code>.</p>
+
+    <table>
+      <tr><th>Variant</th><th>Applies when</th></tr>
+      <tr><td><code>hover:</code></td><td>The pointer is over the element</td></tr>
+      <tr><td><code>focus:</code></td><td>The element has keyboard or click focus</td></tr>
+      <tr><td><code>active:</code></td><td>The element is being actively clicked or pressed</td></tr>
+      <tr><td><code>disabled:</code></td><td>The element has the <code>disabled</code> attribute (form elements)</td></tr>
+      <tr><td><code>focus-visible:</code></td><td>Focused specifically via keyboard navigation, not a mouse click</td></tr>
+    </table>
+
+    <pre class="code-block">&lt;button class="bg-violet-600 hover:bg-violet-500 active:bg-violet-800 text-white px-5 py-3 rounded-lg"&gt;
+  Save changes
+&lt;/button&gt;</pre>
+
+    <div class="demo-box">
+      <button class="demo-btn">Hover and click me</button>
+    </div>
+
+    <p>Each variant only overrides the property it sets. In the example above, three different shades of the same color are defined for three different states, and the browser switches between them automatically, no JavaScript involved.</p>
+
+    <h3>Focus on form fields</h3>
+    <pre class="code-block">&lt;input class="border border-slate-600 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/40 rounded-lg px-4 py-2"&gt;</pre>
+
+    <div class="demo-box">
+      <input class="demo-input" placeholder="Click to focus">
+    </div>
+
+    <p><code>ring-*</code> adds a glow-style outline around an element, commonly paired with <code>focus:</code> to give clear visual feedback that a field is active, without changing the element's layout size the way a thick border would.</p>
+  </section>
+
+  <section id="group">
+    <h2><span class="no">2</span>Group Variants</h2>
+    <div class="section-line"></div>
+    <p>Group variants style a child element based on the state of its <strong>parent</strong>. The parent is marked with the <code>group</code> class, and the child uses <code>group-hover:</code>, <code>group-focus:</code>, or similar, to react to the parent's state.</p>
+
+    <pre class="code-block">&lt;div class="group bg-slate-800 rounded-lg p-4 cursor-pointer hover:bg-slate-700"&gt;
+  &lt;p class="text-slate-400 group-hover:text-sky-400 group-hover:underline"&gt;
+    Read more
+  &lt;/p&gt;
+&lt;/div&gt;</pre>
+
+    <div class="demo-box">
+      <div class="demo-group">
+        <p class="demo-group-text">Hover this whole card, watch the text below react</p>
+      </div>
+    </div>
+
+    <div class="note"><strong>Why this exists:</strong> without group, hovering a child only affects that child's own hover state. group lets an entire card, row, or link area trigger style changes on elements nested inside it, without needing separate hover listeners on every child.</div>
+  </section>
+
+  <section id="peer">
+    <h2><span class="no">3</span>Peer Variants</h2>
+    <div class="section-line"></div>
+    <p>Peer variants style an element based on the state of a <strong>sibling</strong> element, not a parent. The sibling being watched is marked with the <code>peer</code> class, and the element reacting to it uses <code>peer-hover:</code>, <code>peer-focus:</code>, <code>peer-checked:</code>, or similar.</p>
+
+    <pre class="code-block">&lt;input type="checkbox" class="peer"&gt;
+&lt;p class="text-slate-500 peer-checked:text-emerald-400"&gt;
+  Turns green once the checkbox above is checked
+&lt;/p&gt;</pre>
+
+    <div class="warn"><strong>Important ordering rule:</strong> the <code>peer</code> element must come <strong>before</strong> the element reacting to it in the HTML. This only works on later siblings, not earlier ones, because of how the underlying CSS selector is built. If the reacting element is placed before the peer in the markup, the effect will not work.</div>
+
+    <h3>Common use case: floating label inputs</h3>
+    <p>A very common real-world pattern: an input marked as <code>peer</code>, with a label that changes position or color using <code>peer-focus:</code>, entirely in CSS with no JavaScript.</p>
+  </section>
+
+  <section id="dark">
+    <h2><span class="no">4</span>Dark Mode</h2>
+    <div class="section-line"></div>
+    <p>The <code>dark:</code> variant applies a utility only when dark mode is active. By default, this follows the operating system or browser's color scheme preference automatically, no configuration required.</p>
+
+    <pre class="code-block">&lt;div class="bg-white text-slate-900 dark:bg-slate-900 dark:text-white p-6 rounded-lg"&gt;
+  Adapts automatically to system dark mode
+&lt;/div&gt;</pre>
+
+    <div class="note"><strong>Key point:</strong> <code>dark:</code> classes only define what changes in dark mode. The light-mode styles still need to be written as normal, unprefixed classes on the same element. There is no single class that means "dark mode base style," both states are declared side by side.</div>
+
+    <p>A project can be switched from automatically following the system preference to a manually toggled dark mode (such as a button the user clicks), but that requires a small config change in the build setup. This course uses the automatic, system-based version by default.</p>
+  </section>
+
+  <section id="transitions">
+    <h2><span class="no">5</span>Transitions &amp; Basic Animation</h2>
+    <div class="section-line"></div>
+    <p>Without a transition class, state changes (like a hover color swap) happen instantly, in a single frame. <code>transition-*</code> classes make that change animate smoothly instead.</p>
+
+    <table>
+      <tr><th>Class</th><th>Effect</th></tr>
+      <tr><td><code>transition</code></td><td>Enables smooth animation for common properties (color, background, border, opacity, shadow, transform)</td></tr>
+      <tr><td><code>transition-colors</code></td><td>Animates only color-related properties, more efficient if that's all that's changing</td></tr>
+      <tr><td><code>duration-300</code></td><td>Sets how long the transition takes, in milliseconds</td></tr>
+      <tr><td><code>ease-in-out</code></td><td>Controls the acceleration curve of the animation</td></tr>
+    </table>
+
+    <pre class="code-block">&lt;button class="bg-sky-600 hover:bg-sky-500 transition-colors duration-300"&gt;
+  Smooth hover
+&lt;/button&gt;</pre>
+
+    <div class="warn"><strong>Common mistake:</strong> adding <code>hover:</code> color changes without a <code>transition</code> class produces an abrupt, instant color swap. The transition class must be added separately, it is not automatic just because a hover variant exists.</div>
+  </section>
+
+  <section id="stacking">
+    <h2><span class="no">6</span>Stacking Variants</h2>
+    <div class="section-line"></div>
+    <p>Variants can be combined by writing them one after another before the utility, applying the utility only when every condition in the chain is true at once.</p>
+
+    <pre class="code-block">&lt;button class="dark:hover:bg-fuchsia-600"&gt;
+  Only fuchsia when in dark mode AND hovered
+&lt;/button&gt;
+
+&lt;button class="disabled:hover:bg-sky-500"&gt;
+  Keeps the same background on hover, even while disabled
+&lt;/button&gt;</pre>
+
+    <div class="note"><strong>Order matters when combining responsive size, dark mode, and state:</strong> the correct order is responsive breakpoint first, then <code>dark:</code>, then the interaction state, e.g. <code>md:dark:hover:bg-slate-700</code>. Writing them in a different order can fail to apply correctly.</div>
+  </section>
+
+  <section id="qa">
+    <h2><span class="no">?</span>Common Questions &amp; Misconceptions</h2>
+    <div class="section-line"></div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>group-hover: and hover: do the same thing.</div>
+      <div class="qa-a">hover: reacts to the element's own hover state. group-hover: reacts to a parent element's hover state, and requires that parent to carry the group class. Applying hover: directly to a child only affects that child when the mouse is over the child itself, not the surrounding card.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>Why doesn't my peer-checked: style apply?</div>
+      <div class="qa-a">The most common cause is ordering: the peer element must appear before the reacting element in the HTML. If the label or text meant to react comes before the input carrying the peer class, it will not work, since the underlying selector only looks at later siblings.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>Adding hover: automatically makes the color change smooth.</div>
+      <div class="qa-a">Incorrect. Without a transition class, the change is instant. transition (or a more specific variant like transition-colors) must be added explicitly for the change to animate.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>Do I need to write a separate class for dark mode's base style?</div>
+      <div class="qa-a">No such thing exists. Light mode styles are written as normal, unprefixed classes. dark: classes only specify what changes when dark mode is active, both sets sit side by side on the same element.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag myth">Myth</span>Variants can be stacked in any order.</div>
+      <div class="qa-a">Order matters for correct behavior. The convention is responsive breakpoint first, then dark mode, then interaction state, for example md:dark:hover:bg-slate-700. Writing it out of order can cause the utility to not apply as expected.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q"><span class="tag">Q&amp;A</span>What's the difference between focus: and focus-visible:?</div>
+      <div class="qa-a">focus: applies whenever the element has focus, including a plain mouse click. focus-visible: applies more narrowly, generally only when focus was reached through keyboard navigation, which avoids showing a focus ring after every mouse click while still preserving it for keyboard users.</div>
+    </div>
+  </section>
+
+  <section id="summary">
+    <h2><span class="no">✓</span>Summary</h2>
+    <div class="section-line"></div>
+    <div class="summary-box">
+      <ul class="notes-list">
+        <li>Pseudo-class variants (<code>hover:</code>, <code>focus:</code>, <code>active:</code>, <code>disabled:</code>) apply a utility only during that interaction state.</li>
+        <li><code>group</code> on a parent plus <code>group-hover:</code> (or similar) on a child lets the child react to the parent's state.</li>
+        <li><code>peer</code> on a sibling plus <code>peer-*</code> on a later sibling lets one element react to another, order in the HTML matters.</li>
+        <li><code>dark:</code> applies a utility only in dark mode, following the system preference by default. Light-mode styles are still written normally alongside it.</li>
+        <li><code>transition-*</code> and <code>duration-*</code> must be added explicitly for state changes to animate smoothly, this is not automatic.</li>
+        <li>Variants stack in order: responsive breakpoint, then dark mode, then interaction state.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="end">
+    Module 6 Notes · Tailwind CSS Track · Nexcore Institute of Technology<br>
+    Next: Module 7 — Responsive Design
+  </footer>
+
+</div>
+</body>
+</html>
